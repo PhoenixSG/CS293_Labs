@@ -1,0 +1,156 @@
+
+10
+
+Bubble Sort, Random, 45
+Quick Sort Fixed, Random, 55
+Quick Sort Random, Random, 59
+Bubble Sort, 90% increasing, 45
+Quick Sort Fixed, 90% increasing, 64
+Quick Sort Random, 90% increasing, 55
+Bubble Sort, 90% decreasing, 45
+Quick Sort Fixed, 90% decreasing, 53
+Quick Sort Random, 90% decreasing, 53
+
+20
+
+Bubble Sort, Random, 190
+Quick Sort Fixed, Random, 162
+Quick Sort Random, Random, 149
+Bubble Sort, 90% increasing, 190
+Quick Sort Fixed, 90% increasing, 190
+Quick Sort Random, 90% increasing, 198
+Bubble Sort, 90% decreasing, 190
+Quick Sort Fixed, 90% decreasing, 172
+Quick Sort Random, 90% decreasing, 135
+
+40
+
+Bubble Sort, Random, 780
+Quick Sort Fixed, Random, 348
+Quick Sort Random, Random, 332
+Bubble Sort, 90% increasing, 780
+Quick Sort Fixed, 90% increasing, 630
+Quick Sort Random, 90% increasing, 590
+Bubble Sort, 90% decreasing, 780
+Quick Sort Fixed, 90% decreasing, 554
+Quick Sort Random, 90% decreasing, 344
+
+80
+
+Bubble Sort, Random, 3160
+Quick Sort Fixed, Random, 759
+Quick Sort Random, Random, 731
+Bubble Sort, 90% increasing, 3160
+Quick Sort Fixed, 90% increasing, 2461
+Quick Sort Random, 90% increasing, 1472
+Bubble Sort, 90% decreasing, 3160
+Quick Sort Fixed, 90% decreasing, 1980
+Quick Sort Random, 90% decreasing, 924
+
+160
+
+Bubble Sort, Random, 12720
+Quick Sort Fixed, Random, 1866
+Quick Sort Random, Random, 1944
+Bubble Sort, 90% increasing, 12720
+Quick Sort Fixed, 90% increasing, 9388
+Quick Sort Random, 90% increasing, 4428
+Bubble Sort, 90% decreasing, 12720
+Quick Sort Fixed, 90% decreasing, 8024
+Quick Sort Random, 90% decreasing, 2090
+
+320
+
+Bubble Sort, Random, 51040
+Quick Sort Fixed, Random, 4265
+Quick Sort Random, Random, 4239
+Bubble Sort, 90% increasing, 51040
+Quick Sort Fixed, 90% increasing, 35908
+Quick Sort Random, 90% increasing, 6857
+Bubble Sort, 90% decreasing, 51040
+Quick Sort Fixed, 90% decreasing, 31052
+Quick Sort Random, 90% decreasing, 5812
+
+640
+
+Bubble Sort, Random, 204480
+Quick Sort Fixed, Random, 9124
+Quick Sort Random, Random, 8460
+Bubble Sort, 90% increasing, 204480
+Quick Sort Fixed, 90% increasing, 141072
+Quick Sort Random, 90% increasing, 34325
+Bubble Sort, 90% decreasing, 204480
+Quick Sort Fixed, 90% decreasing, 119211
+Quick Sort Random, 90% decreasing, 13108
+
+1280
+
+Bubble Sort, Random, 818560
+Quick Sort Fixed, Random, 21345
+Quick Sort Random, Random, 19228
+Bubble Sort, 90% increasing, 818560
+Quick Sort Fixed, 90% increasing, 564852
+Quick Sort Random, 90% increasing, 94829
+Bubble Sort, 90% decreasing, 818560
+Quick Sort Fixed, 90% decreasing, 444618
+Quick Sort Random, 90% decreasing, 47380
+
+2560
+
+Bubble Sort, Random, 3275520
+Quick Sort Fixed, Random, 43427
+Quick Sort Random, Random, 42740
+Bubble Sort, 90% increasing, 3275520
+Quick Sort Fixed, 90% increasing, 2276394
+Quick Sort Random, 90% increasing, 118723
+Bubble Sort, 90% decreasing, 3275520
+Quick Sort Fixed, 90% decreasing, 1899785
+Quick Sort Random, 90% decreasing, 125200
+
+5120
+
+Bubble Sort, Random, 13104640
+Quick Sort Fixed, Random, 100285
+Quick Sort Random, Random, 91584
+Bubble Sort, 90% increasing, 13104640
+Quick Sort Fixed, 90% increasing, 9058840
+Quick Sort Random, 90% increasing, 432197
+Bubble Sort, 90% decreasing, 13104640
+Quick Sort Fixed, 90% decreasing, 7258381
+Quick Sort Random, 90% decreasing, 605484
+
+10240
+
+Bubble Sort, Random, 52423680
+Quick Sort Fixed, Random, 223093
+Quick Sort Random, Random, 203890
+Bubble Sort, 90% increasing, 52423680
+Quick Sort Fixed, 90% increasing, 36178037
+Quick Sort Random, 90% increasing, 2573884
+Bubble Sort, 90% decreasing, 52423680
+Quick Sort Fixed, 90% decreasing, 30225022
+Quick Sort Random, 90% decreasing, 914833
+
+20480
+
+Bubble Sort, Random, 209704960
+Quick Sort Fixed, Random, 474934
+Quick Sort Random, Random, 431104
+Bubble Sort, 90% increasing, 209704960
+Quick Sort Fixed, 90% increasing, 144835038
+Quick Sort Random, 90% increasing, 4179381
+Bubble Sort, 90% decreasing, 209704960
+Quick Sort Fixed, 90% decreasing, 119872233
+Quick Sort Random, 90% decreasing, 4202098
+
+40960
+
+Bubble Sort, Random, 838840320
+Quick Sort Fixed, Random, 973743
+Quick Sort Random, Random, 925714
+Bubble Sort, 90% increasing, 838840320
+Quick Sort Fixed, 90% increasing, 578324726
+Quick Sort Random, 90% increasing, 10935697
+Bubble Sort, 90% decreasing, 838840320
+Quick Sort Fixed, 90% decreasing, 473801580
+Quick Sort Random, 90% decreasing, 6383354

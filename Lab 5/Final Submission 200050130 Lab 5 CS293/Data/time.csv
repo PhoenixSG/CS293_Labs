@@ -1,0 +1,156 @@
+
+10
+
+Bubble Sort, Random, 2.048e-06
+Quick Sort Fixed, Random, 1.991e-06
+Quick Sort Random, Random, 3.909e-06
+Bubble Sort, 90% increasing, 1.306e-06
+Quick Sort Fixed, 90% increasing, 2.242e-06
+Quick Sort Random, 90% increasing, 2.892e-06
+Bubble Sort, 90% decreasing, 1.988e-06
+Quick Sort Fixed, 90% decreasing, 2.028e-06
+Quick Sort Random, 90% decreasing, 2.782e-06
+
+20
+
+Bubble Sort, Random, 6.788e-06
+Quick Sort Fixed, Random, 5.488e-06
+Quick Sort Random, Random, 6.828e-06
+Bubble Sort, 90% increasing, 3.404e-06
+Quick Sort Fixed, 90% increasing, 4.056e-06
+Quick Sort Random, 90% increasing, 6.367e-06
+Bubble Sort, 90% decreasing, 4.744e-06
+Quick Sort Fixed, 90% decreasing, 3.793e-06
+Quick Sort Random, 90% decreasing, 5.656e-06
+
+40
+
+Bubble Sort, Random, 1.8724e-05
+Quick Sort Fixed, Random, 1.0982e-05
+Quick Sort Random, Random, 1.3873e-05
+Bubble Sort, 90% increasing, 1.063e-05
+Quick Sort Fixed, 90% increasing, 9.127e-06
+Quick Sort Random, 90% increasing, 1.3296e-05
+Bubble Sort, 90% decreasing, 1.4532e-05
+Quick Sort Fixed, 90% decreasing, 8.562e-06
+Quick Sort Random, 90% decreasing, 1.1421e-05
+
+80
+
+Bubble Sort, Random, 6.6367e-05
+Quick Sort Fixed, Random, 2.5471e-05
+Quick Sort Random, Random, 2.8396e-05
+Bubble Sort, 90% increasing, 3.5691e-05
+Quick Sort Fixed, 90% increasing, 2.5291e-05
+Quick Sort Random, 90% increasing, 2.8616e-05
+Bubble Sort, 90% decreasing, 4.944e-05
+Quick Sort Fixed, 90% decreasing, 2.2583e-05
+Quick Sort Random, 90% decreasing, 2.65e-05
+
+160
+
+Bubble Sort, Random, 7.5927e-05
+Quick Sort Fixed, Random, 1.8232e-05
+Quick Sort Random, Random, 2.16e-05
+Bubble Sort, 90% increasing, 4.619e-05
+Quick Sort Fixed, 90% increasing, 2.9083e-05
+Quick Sort Random, 90% increasing, 2.3434e-05
+Bubble Sort, 90% decreasing, 6.3485e-05
+Quick Sort Fixed, 90% decreasing, 2.5252e-05
+Quick Sort Random, 90% decreasing, 1.8476e-05
+
+320
+
+Bubble Sort, Random, 0.000268249
+Quick Sort Fixed, Random, 3.962e-05
+Quick Sort Random, Random, 4.7642e-05
+Bubble Sort, 90% increasing, 0.000172032
+Quick Sort Fixed, 90% increasing, 9.7399e-05
+Quick Sort Random, 90% increasing, 4.1914e-05
+Bubble Sort, 90% decreasing, 0.000246797
+Quick Sort Fixed, 90% decreasing, 8.4159e-05
+Quick Sort Random, 90% decreasing, 3.9857e-05
+
+640
+
+Bubble Sort, Random, 0.0009637
+Quick Sort Fixed, Random, 7.7999e-05
+Quick Sort Random, Random, 9.0659e-05
+Bubble Sort, 90% increasing, 0.000626287
+Quick Sort Fixed, 90% increasing, 0.000336545
+Quick Sort Random, 90% increasing, 0.000122697
+Bubble Sort, 90% decreasing, 0.000911248
+Quick Sort Fixed, 90% decreasing, 0.00027917
+Quick Sort Random, 90% decreasing, 7.9183e-05
+
+1280
+
+Bubble Sort, Random, 0.00334007
+Quick Sort Fixed, Random, 0.000147003
+Quick Sort Random, Random, 0.000169742
+Bubble Sort, 90% increasing, 0.00226495
+Quick Sort Fixed, 90% increasing, 0.00111001
+Quick Sort Random, 90% increasing, 0.000261697
+Bubble Sort, 90% decreasing, 0.00312629
+Quick Sort Fixed, 90% decreasing, 0.00086582
+Quick Sort Random, 90% decreasing, 0.00017254
+
+2560
+
+Bubble Sort, Random, 0.0112688
+Quick Sort Fixed, Random, 0.000272612
+Quick Sort Random, Random, 0.000320289
+Bubble Sort, 90% increasing, 0.00789892
+Quick Sort Fixed, 90% increasing, 0.00401373
+Quick Sort Random, 90% increasing, 0.000352751
+Bubble Sort, 90% decreasing, 0.0114498
+Quick Sort Fixed, 90% decreasing, 0.00323286
+Quick Sort Random, 90% decreasing, 0.000364677
+
+5120
+
+Bubble Sort, Random, 0.051794
+Quick Sort Fixed, Random, 0.000576867
+Quick Sort Random, Random, 0.000665761
+Bubble Sort, 90% increasing, 0.0312044
+Quick Sort Fixed, 90% increasing, 0.0155522
+Quick Sort Random, 90% increasing, 0.0010173
+Bubble Sort, 90% decreasing, 0.0452444
+Quick Sort Fixed, 90% decreasing, 0.0121867
+Quick Sort Random, 90% decreasing, 0.00135875
+
+10240
+
+Bubble Sort, Random, 0.244855
+Quick Sort Fixed, Random, 0.0012064
+Quick Sort Random, Random, 0.00138329
+Bubble Sort, 90% increasing, 0.124159
+Quick Sort Fixed, 90% increasing, 0.0612297
+Quick Sort Random, 90% increasing, 0.00488157
+Bubble Sort, 90% decreasing, 0.178585
+Quick Sort Fixed, 90% decreasing, 0.0506233
+Quick Sort Random, 90% decreasing, 0.00211823
+
+20480
+
+Bubble Sort, Random, 1.08677
+Quick Sort Fixed, Random, 0.0025461
+Quick Sort Random, Random, 0.00287159
+Bubble Sort, 90% increasing, 0.499117
+Quick Sort Fixed, 90% increasing, 0.24526
+Quick Sort Random, 90% increasing, 0.00818478
+Bubble Sort, 90% decreasing, 0.726147
+Quick Sort Fixed, 90% decreasing, 0.200851
+Quick Sort Random, 90% decreasing, 0.00826406
+
+40960
+
+Bubble Sort, Random, 4.30923
+Quick Sort Fixed, Random, 0.00461591
+Quick Sort Random, Random, 0.00524033
+Bubble Sort, 90% increasing, 1.72592
+Quick Sort Fixed, 90% increasing, 0.830373
+Quick Sort Random, 90% increasing, 0.0175552
+Bubble Sort, 90% decreasing, 2.53846
+Quick Sort Fixed, 90% decreasing, 0.678587
+Quick Sort Random, 90% decreasing, 0.0113082
