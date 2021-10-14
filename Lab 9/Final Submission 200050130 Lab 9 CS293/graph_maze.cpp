@@ -21,7 +21,7 @@ class graph
 public:
     graph(int rows, int columns)
     {
-        size = rows*columns;
+        size = rows * columns;
         this->rows = rows;
         this->columns = columns;
         for (int i = 0; i <= size; i++)
@@ -40,36 +40,37 @@ public:
     void BFS(int s, int final)
     {
         bool *visited = new bool[size + 1];
-        string *path = new string[size+1];
-        for (int i = 0; i <= size; i++){
+        string *path = new string[size + 1];
+        for (int i = 0; i <= size; i++)
+        {
             visited[i] = false;
-            path[i]="";
+            path[i] = "";
         }
 
-        list<int> queue;
+        queue<int> queue;
 
         visited[s] = true;
-        path[s]="Start ("+ to_string((s-1)/columns+1)+","+to_string((s-1)%columns+1)+")";
-        queue.push_back(s);
+        path[s] = "Start (" + to_string((s - 1) / columns + 1) + "," + to_string((s - 1) % columns + 1) + ")";
+        queue.push(s);
 
         while (!queue.empty())
         {
             s = queue.front();
             // cout << s << " "<<path[s]<<endl;
-            queue.pop_front();
+            queue.pop();
 
             for (auto i : adjacency_list[s])
             {
                 if (!visited[i])
                 {
                     visited[i] = true;
-                    path[i] = path[s] + " ("+ to_string((i-1)/columns+1)+","+to_string((i-1)%columns+1)+")";
-                    queue.push_back(i);
+                    path[i] = path[s] + " (" + to_string((i - 1) / columns + 1) + "," + to_string((i - 1) % columns + 1) + ")";
+                    queue.push(i);
                 }
             }
         }
 
-        cout<<path[final]<<" Finish"<<endl;
+        cout << path[final] << " Finish" << endl;
     }
 };
 
@@ -85,7 +86,7 @@ int main()
     }
     int rows, columns;
     file >> rows >> columns;
-    graph *g = new graph((rows - 1) , (columns - 1));
+    graph *g = new graph((rows - 1), (columns - 1));
 
     char horizontal[rows + 1][columns];
     char vertical[rows][columns + 1];
@@ -131,8 +132,7 @@ int main()
     }
 
     //number of each cell (i, j) is columns*(i-1)+j
-    g->BFS(1, (rows-1)*(columns-1));
-
+    g->BFS(1, (rows - 1) * (columns - 1));
 
     return 0;
 }
