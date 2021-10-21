@@ -60,7 +60,7 @@ public:
 
             for (auto i : adjacency_list[s])
             {
-                if (!visited[i])
+                if (!visited[i]) 
                 {
                     visited[i] = true;
                     path[i] = path[s] + " ("+ to_string((i-1)/columns+1)+","+to_string((i-1)%columns+1)+")";
