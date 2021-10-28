@@ -15,8 +15,10 @@ public:
         this->size = size;
         for (int i = 0; i <= size; i++)
         {
-            vector<int> v;
+            vector<int> v, w;
             adjacency_list.push_back(v);
+            reversal_list.push_back(w);
+
         }
     }
 
