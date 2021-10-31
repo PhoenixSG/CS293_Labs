@@ -3,49 +3,51 @@
 
 #define MAX_ITERATION 255
 
-double isMandelbrot (double x, double y) {
+double isMandelbrot(double x, double y)
+{
+    int w = 1000;
+    int h = 800;
 
+    double x, y;
+    double range_x = 4, range_y = 4;
 
-    int i;
-    int j;
-    double Re[255];
-    double Im[255];
-    double a;
-    double b;
-    // double dist;
-    double finaldist;
-    int check;
+    for (int i = 0; i <= h; i += 1)
+    {
+        for (int j = 0; j <= w; j += 1)
+        {
 
-    i=0;
-    Re[0]=0;
-    Im[0]=0;
-    j=-1;
-    a=0;
-    b=0;
+            x = 2.0 * j / w * range_x - range_x;
+            y = 2.0 * i / h * range_y - range_y;
+            // cout<<x<<" "<<y<<endl;
+            double x_1 = x, y_1 = y;
+            int l;
+            for (l = 0; l < 100; l++)
+            {
+                int real = x * x - y * y;
+                int imag = 2 * x * y;
 
-    while (i < MAX_ITERATION) {
+                x = real + x_1;
+                y = imag + y_1;
 
-        a = Re[j];
-        b = Im[j];
+                if (x * x + y * y > 10)
+                {
+                    break;
+                }
+            }
 
-        Re[i]=((a*a)-(b*b))+x;
-        Im[i]=(2 * a * b) + y;
+            if (l <100)
+            { //not in mandelbrot
+                
+            }
+            else
+            { //in mandelbrot set
+                
+            }
 
-        i++;
-        j++;
+            return check;
+        }
     }
-
-    finaldist = sqrt(pow(Re[MAX_ITERATION],2)+pow(Im[MAX_ITERATION],2));
-
-    if (finaldist > 2) { //not in mandelbrot
-        check = 0;
-    } else if (finaldist <= 2) { //in mandelbrot set
-        check = 1;
-    }
-
-    return check;
 }
-
 
 int main()
 {
@@ -53,14 +55,13 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(200, 200), "WORKS!", sf::Style::Close | sf::Style::Resize);
 
-    
-
-
     while (window.isOpen())
     {
         sf::Event event;
-        while(window.pollEvent(event)){
-            if(event.type = event.Closed){
+        while (window.pollEvent(event))
+        {
+            if (event.type = event.Closed)
+            {
                 window.close();
             }
         }
