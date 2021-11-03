@@ -21,8 +21,8 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
         for (int j = 0; j < width; j++)
         {
             //scale the pixel location to the complex plane for calculations
-            long double x = ((long double)j + pixel_shift_x) / zoom;
-            long double y = ((long double)i + pixel_shift_y) / zoom;
+            long double x = ((long double)j + pixel_shift_x) / int(zoom);
+            long double y = ((long double)i + pixel_shift_y) / int(zoom);
             complex_number c;
             c.real = x;
             c.imaginary = y;
@@ -61,6 +61,7 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
             }
         }
     }
+    cout<<zoom<<" "<<precision<<endl;
 }
 
 int main()
@@ -70,7 +71,7 @@ int main()
     window.setFramerateLimit(30);
     sf::VertexArray pointmap(sf::Points, width * height);
 
-    float zoom = 300.0f;
+    float zoom = 256.0f;
     int precision = 100;
     int x_shift = -width / 2;
     int y_shift = -height / 2;
@@ -84,45 +85,67 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::MouseWheelMoved)
+            {
+                double zoom_factor = 1.25;
+                if (event.mouseWheel.delta == 1)
+                {
+                    x_shift += (event.mouseWheel.x + x_shift) * (zoom_factor - 1);
+                    y_shift += (event.mouseWheel.y + y_shift) * (zoom_factor - 1);
+                    zoom *= zoom_factor;
+                    precision = min(4000.0, precision + 200 * (zoom_factor - 1));
+                }
+                else if (event.mouseWheel.delta == -1)
+                {
+                    x_shift /= zoom_factor;
+                    y_shift /= zoom_factor;
+                    x_shift -= event.mouseWheel.x * (zoom_factor - 1) / zoom_factor;
+                    y_shift -= event.mouseWheel.y * (zoom_factor - 1) / zoom_factor;
+                    zoom /= zoom_factor;
+                    precision = max(100.0, precision - 200 * (zoom_factor - 1));
+                }
+#pragma omp parallel for
+                for (int i = 0; i < width * height; i++)
+                {
+                    pointmap[i].color = sf::Color::Black;
+                }
+                generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+            }
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                 double zoom_factor = 2;
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    x_shift += (event.mouseWheel.x + x_shift) * (zoom_factor - 1);
+                    y_shift += (event.mouseWheel.y + y_shift) * (zoom_factor - 1);
+                    zoom *= zoom_factor;
+                    precision = min(4000.0, precision + 200 * (zoom_factor - 1));
+#pragma omp parallel for
+                    for (int i = 0; i < width * height; i++)
+                    {
+                        pointmap[i].color = sf::Color::Black;
+                    }
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                }
+                else if (event.mouseButton.button == sf::Mouse::Right)
+                {
+                    x_shift /= zoom_factor;
+                    y_shift /= zoom_factor;
+                    x_shift -= event.mouseWheel.x * (zoom_factor - 1) / zoom_factor;
+                    y_shift -= event.mouseWheel.y * (zoom_factor - 1) / zoom_factor;
+                    zoom /= zoom_factor;
+                    precision = max(100.0, precision - 200 * (zoom_factor - 1));
+
+#pragma omp parallel for
+                    for (int i = 0; i < width * height; i++)
+                    {
+                        pointmap[i].color = sf::Color::Black;
+                    }
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                }
+            }
         }
 
-        //zoom into area that is left clicked
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-        {
-            sf::Vector2i position = sf::Mouse::getPosition(window);
-            cout<<position.x<<" "<<position.y<<endl;
-            cout<<x_shift<<" "<<y_shift<<endl;
-            cout<<zoom<<" "<<precision<<endl;
-            x_shift += position.x + x_shift;
-            y_shift += position.y + y_shift;
-            zoom *= 2;
-            precision = min(4000, precision+200);
-#pragma omp parallel for
-            for (int i = 0; i < width * height; i++)
-            {
-                pointmap[i].color = sf::Color::Black;
-            }
-            generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
-        }
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-        {
-            sf::Vector2i position = sf::Mouse::getPosition(window);
-            x_shift /=2;
-            y_shift /=2;
-            x_shift-=position.x/2;
-            y_shift-=position.y/2;
-            cout<<x_shift<<" "<<y_shift<<endl;
-            cout<<zoom<<" "<<precision<<endl;
-            zoom *= 0.5;
-            // zoom = 300;
-            precision =max(100, precision-200);
-#pragma omp parallel for
-            for (int i = 0; i < width * height; i++)
-            {
-                pointmap[i].color = sf::Color::Black;
-            }
-            generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
-        }
         window.clear();
         window.draw(pointmap);
         window.display();
