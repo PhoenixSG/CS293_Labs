@@ -7,10 +7,33 @@ const int width = 1280;
 const int height = 720;
 
 //used for complex numbers
-struct complex_number
+class complex_num
 {
-    long double real;
-    long double imaginary;
+    private:
+        long double real_part;
+        long double imaginary_part;
+    public:
+        long double get_real(){
+            return real_part;
+        }
+        long double get_img(){
+            return imaginary_part;
+        }
+        void set_real(long double real){
+            real_part = real;
+        }
+        void set_img(long double img){
+            imaginary_part = img;
+        }
+        long double get_magnitude(){
+            return sqrt(real_part*real_part+imaginary_part*imaginary_part);
+        }
+        long double get_angle(){
+            return atan(imaginary_part/real_part);
+        }
+        // over load addition
+        // overload multiplication as well
+        // simple tasks
 };
 
 void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
@@ -20,21 +43,20 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
     {
         for (int j = 0; j < width; j++)
         {
-            //scale the pixel location to the complex plane for calculations
-            long double x = ((long double)j + pixel_shift_x) / int(zoom);
-            long double y = ((long double)i + pixel_shift_y) / int(zoom);
-            complex_number c;
-            c.real = x;
-            c.imaginary = y;
-            complex_number z = c;
+            long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
+            long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+            complex_num point;
+            point.set_real(x_coor);
+            point.set_img(y_coor);
+            complex_num z = point;
             int iterations = 0; //keep track of the number of iterations
             for (int k = 0; k < precision; k++)
             {
-                complex_number z2;
+                complex_num z2;
                 z2.real = z.real * z.real - z.imaginary * z.imaginary;
                 z2.imaginary = 2 * z.real * z.imaginary;
-                z2.real += c.real;
-                z2.imaginary += c.imaginary;
+                z2.real += point.real;
+                z2.imaginary += point.imaginary;
                 z = z2;
                 iterations++;
                 if (z.real * z.real + z.imaginary * z.imaginary > 4)
@@ -59,9 +81,10 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
                 sf::Color color(0, 0, iterations * 255.0f / precision);
                 vertexarray[i * width + j].color = color;
             }
+            // colour this differently
         }
     }
-    cout<<zoom<<" "<<precision<<endl;
+    cout<<"ZOOM is "<<zoom<<" and precision level is "<<precision<<endl;
 }
 
 int main()
@@ -135,7 +158,7 @@ int main()
                     y_shift -= event.mouseWheel.y * (zoom_factor - 1) / zoom_factor;
                     zoom /= zoom_factor;
                     precision = max(100.0, precision - 200 * (zoom_factor - 1));
-
+//learn what is pragma
 #pragma omp parallel for
                     for (int i = 0; i < width * height; i++)
                     {
