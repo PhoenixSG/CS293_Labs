@@ -31,8 +31,20 @@ class complex_num
         long double get_angle(){
             return atan(imaginary_part/real_part);
         }
+        complex_num operator * (complex_num object){
+            complex_num product;
+            product.set_real(real_part*object.get_real()-imaginary_part*object.get_img());
+            product.set_img(real_part*object.get_img()+imaginary_part*object.get_real());
+            return product;
+        }
+        complex_num operator + (complex_num object){
+            complex_num sum;
+            sum.set_real(real_part+object.get_real());
+            sum.set_img(imaginary_part+object.get_img());
+            return sum;
+        }
+
         // over load addition
-        // overload multiplication as well
         // simple tasks
 };
 
@@ -52,14 +64,12 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
             int iterations = 0; //keep track of the number of iterations
             for (int k = 0; k < precision; k++)
             {
-                complex_num z2;
-                z2.real = z.real * z.real - z.imaginary * z.imaginary;
-                z2.imaginary = 2 * z.real * z.imaginary;
-                z2.real += point.real;
-                z2.imaginary += point.imaginary;
-                z = z2;
+                complex_num z_new;
+                z_new = z*z;
+                z_new = z_new+point;
+                z = z_new;
                 iterations++;
-                if (z.real * z.real + z.imaginary * z.imaginary > 4)
+                if (z.get_magnitude() > 3)
                     break;
             }
             //color pixel based on the number of iterations
@@ -81,6 +91,12 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
                 sf::Color color(0, 0, iterations * 255.0f / precision);
                 vertexarray[i * width + j].color = color;
             }
+            else
+            {
+                vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                sf::Color color(150,150,150);
+                vertexarray[i * width + j].color = color;
+            }
             // colour this differently
         }
     }
@@ -89,8 +105,8 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
 
 int main()
 {
-    sf::String title_string = "Mandelbrot Set Plotter";
-    sf::RenderWindow window(sf::VideoMode(width, height), title_string);
+    sf::String heading = "Mandelbrot Set Plotter";
+    sf::RenderWindow window(sf::VideoMode(width, height), heading);
     window.setFramerateLimit(30);
     sf::VertexArray pointmap(sf::Points, width * height);
 
