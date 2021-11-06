@@ -2,7 +2,6 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-//resolution of the window
 const int width = 1280;
 const int height = 720;
 
@@ -46,21 +45,20 @@ class complex_num
 
 };
 
-void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+void generate_mandelbrot_set(sf::VertexArray &vertexarray, int x_shift, int y_shift, int precision_needed, float zoom)
 {
-#pragma omp parallel for
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
-            long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+            long double x_coor = ((long double)j + x_shift) / int(zoom);
+            long double y_coor = ((long double)i + y_shift) / int(zoom);
             complex_num point;
             point.set_real(x_coor);
             point.set_img(y_coor);
             complex_num z = point;
             int iterations = 0;
-            for (int k = 0; k < precision; k++)
+            for (int k = 0; k < precision_needed; k++)
             {
                 complex_num z_new;
                 z_new = z*z;
@@ -72,12 +70,12 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
             }
             //color pixel based on the number of iterations
             vertexarray[i * width + j].position = sf::Vector2f(j, i);
-            sf::Color color(iterations * 255.0f / precision, iterations * 255.0f / precision, iterations * 255.0f / precision);
+            sf::Color color(iterations * 255.0f / precision_needed, iterations * 255.0f / precision_needed, iterations * 255.0f / precision_needed);
             vertexarray[i * width + j].color = color;
             // colour this differently
         }
     }
-    cout<<"ZOOM is "<<zoom<<" and precision level is "<<precision<<endl;
+    cout<<"ZOOM is "<<zoom<<" and precision level is "<<precision_needed<<endl;
 }
 
 int main()
@@ -121,7 +119,6 @@ int main()
                     zoom /= zoom_factor;
                     precision = max(100.0, precision - 200 * (zoom_factor - 1));
                 }
-#pragma omp parallel for
                 for (int i = 0; i < width * height; i++)
                 {
                     pointmap[i].color = sf::Color::Black;
@@ -137,7 +134,6 @@ int main()
                     y_shift += (event.mouseWheel.y + y_shift) * (zoom_factor - 1);
                     zoom *= zoom_factor;
                     precision = min(4000.0, precision + 200 * (zoom_factor - 1));
-#pragma omp parallel for
                     for (int i = 0; i < width * height; i++)
                     {
                         pointmap[i].color = sf::Color::Black;
@@ -153,7 +149,6 @@ int main()
                     zoom /= zoom_factor;
                     precision = max(100.0, precision - 200 * (zoom_factor - 1));
 //learn what is pragma better
-#pragma omp parallel for
                     for (int i = 0; i < width * height; i++)
                     {
                         pointmap[i].color = sf::Color::Black;
