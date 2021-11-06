@@ -44,8 +44,6 @@ class complex_num
             return sum;
         }
 
-        // over load addition
-        // simple tasks
 };
 
 void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
@@ -61,7 +59,7 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
             point.set_real(x_coor);
             point.set_img(y_coor);
             complex_num z = point;
-            int iterations = 0; //keep track of the number of iterations
+            int iterations = 0;
             for (int k = 0; k < precision; k++)
             {
                 complex_num z_new;
@@ -73,30 +71,9 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
                     break;
             }
             //color pixel based on the number of iterations
-            if (iterations < precision / 4.0f)
-            {
-                vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
-                vertexarray[i * width + j].color = color;
-            }
-            else if (iterations < precision / 2.0f)
-            {
-                vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
-                vertexarray[i * width + j].color = color;
-            }
-            else if (iterations < precision)
-            {
-                vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(0, 0, iterations * 255.0f / precision);
-                vertexarray[i * width + j].color = color;
-            }
-            else
-            {
-                vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(150,150,150);
-                vertexarray[i * width + j].color = color;
-            }
+            vertexarray[i * width + j].position = sf::Vector2f(j, i);
+            sf::Color color(iterations * 255.0f / precision, iterations * 255.0f / precision, iterations * 255.0f / precision);
+            vertexarray[i * width + j].color = color;
             // colour this differently
         }
     }
@@ -174,7 +151,7 @@ int main()
                     y_shift -= event.mouseWheel.y * (zoom_factor - 1) / zoom_factor;
                     zoom /= zoom_factor;
                     precision = max(100.0, precision - 200 * (zoom_factor - 1));
-//learn what is pragma
+//learn what is pragma better
 #pragma omp parallel for
                     for (int i = 0; i < width * height; i++)
                     {
