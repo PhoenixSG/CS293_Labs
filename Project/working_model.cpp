@@ -56,7 +56,7 @@ public:
     // over load addition
     // simple tasks
 };
-void shift_image_down(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+void shift_image_down(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
     //assume right is pressed.
     // This means we recalculate only when j>width-10(say)
@@ -66,12 +66,12 @@ void shift_image_down(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel
         {
             if (i < height - 10)
             {
-                vertexarray[i * width + j].color = vertexarray[(i+10) * width + j].color;
+                vertexarray[i * width + j].color = vertexarray[(i + 10) * width + j].color;
             }
             else
             {
-                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
-                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+                long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
                 complex_num point;
                 point.set_real(x_coor);
                 point.set_img(y_coor);
@@ -117,22 +117,22 @@ void shift_image_down(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel
         }
     }
 }
-void shift_image_up(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+void shift_image_up(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
     //assume right is pressed.
     // This means we recalculate only when j>width-10(say)
-    for (int i = height-1; i >=0; i--)
+    for (int i = height - 1; i >= 0; i--)
     {
         for (int j = 0; j < width; j++)
         {
-            if (i>10)
+            if (i > 10)
             {
-                vertexarray[i * width + j].color = vertexarray[(i-10) * width + j].color;
+                vertexarray[i * width + j].color = vertexarray[(i - 10) * width + j].color;
             }
             else
             {
-                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
-                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+                long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
                 complex_num point;
                 point.set_real(x_coor);
                 point.set_img(y_coor);
@@ -178,13 +178,13 @@ void shift_image_up(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_s
         }
     }
 }
-void shift_image_left(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+void shift_image_left(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
     //assume right is pressed.
     // This means we recalculate only when j>width-10(say)
     for (int i = 0; i < height; i++)
     {
-        for (int j = width-1; j>=0 ; j--)
+        for (int j = width - 1; j >= 0; j--)
         {
             if (j > 10)
             {
@@ -192,8 +192,8 @@ void shift_image_left(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel
             }
             else
             {
-                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
-                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+                long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
                 complex_num point;
                 point.set_real(x_coor);
                 point.set_img(y_coor);
@@ -239,7 +239,7 @@ void shift_image_left(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel
         }
     }
 }
-void shift_image_right(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+void shift_image_right(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
     //assume right is pressed.
     // This means we recalculate only when j>width-10(say)
@@ -253,8 +253,8 @@ void shift_image_right(sf::VertexArray &vertexarray, int pixel_shift_x, int pixe
             }
             else
             {
-                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
-                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+                long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
                 complex_num point;
                 point.set_real(x_coor);
                 point.set_img(y_coor);
@@ -301,15 +301,15 @@ void shift_image_right(sf::VertexArray &vertexarray, int pixel_shift_x, int pixe
     }
 }
 
-void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
 #pragma omp parallel for
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
-            long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+            long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+            long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
             complex_num point;
             point.set_real(x_coor);
             point.set_img(y_coor);
@@ -354,6 +354,8 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int pixel_shift_x, in
         }
     }
     cout << "ZOOM is " << zoom << " and precision level is " << precision << endl;
+    cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
+
 }
 
 int main()
@@ -465,6 +467,24 @@ int main()
 
                     x_shift += 10;
                     shift_image_right(pointmap, x_shift, y_shift, precision, zoom);
+                }
+                if (event.key.code == sf::Keyboard::R)
+                {
+                    int random_number = 10.0*rand()/RAND_MAX+1;
+                    cout<<random_number<<endl;
+                    zoom = min(pow(10, 9),256.0f*pow(2, random_number));
+                    precision = min(4000, 100+200*random_number);
+                    // x_shift = ((rand()%2)*2-1)*rand();
+                    // y_shift = ((rand()%2)*2-1)*rand();
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                }
+                if (event.key.code == sf::Keyboard::H)
+                {
+                    zoom = 256.0f;
+                    precision = 100;
+                    x_shift = -width / 2;
+                    y_shift = -height / 2;
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
                 }
             }
         }
