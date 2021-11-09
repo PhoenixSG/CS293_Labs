@@ -56,8 +56,7 @@ public:
     // over load addition
     // simple tasks
 };
-
-void shift_image(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom, string task)
+void shift_image_down(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
 {
     //assume right is pressed.
     // This means we recalculate only when j>width-10(say)
@@ -65,19 +64,190 @@ void shift_image(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shif
     {
         for (int j = 0; j < width; j++)
         {
-            if (j < width - 10 && task == "right")
+            if (i < height - 10)
             {
-                vertexarray[i * width + j].color = vertexarray[i * width + j + 10].color;
+                vertexarray[i * width + j].color = vertexarray[(i+10) * width + j].color;
             }
-            else if (j < 10 && task == "left")
+            else
             {
-                vertexarray[i * width + j].color = vertexarray[i * width + j + 10].color;
+                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
+                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                complex_num point;
+                point.set_real(x_coor);
+                point.set_img(y_coor);
+                complex_num z = point;
+                int iterations = 0; //keep track of the number of iterations
+                for (int k = 0; k < precision; k++)
+                {
+                    complex_num z_new;
+                    z_new = z * z;
+                    z_new = z_new + point;
+                    z = z_new;
+                    iterations++;
+                    if (z.get_magnitude() > 3)
+                        break;
+                }
+                //color pixel based on the number of iterations
+                if (iterations < precision / 4.0f)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
+                    vertexarray[i * width + j].color = color;
+                }
+                else if (iterations < precision / 2.0f)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
+                    vertexarray[i * width + j].color = color;
+                }
+                else if (iterations < precision)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(0, 0, iterations * 255.0f / precision);
+                    vertexarray[i * width + j].color = color;
+                }
+                else
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(150, 150, 150);
+                    vertexarray[i * width + j].color = color;
+                }
             }
-            else if (j < width - 10 && task == "up")
+            // colour this differently
+        }
+    }
+}
+void shift_image_up(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+{
+    //assume right is pressed.
+    // This means we recalculate only when j>width-10(say)
+    for (int i = height-1; i >=0; i--)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            if (i>10)
             {
-                vertexarray[i * width + j].color = vertexarray[i * width + j + 10].color;
+                vertexarray[i * width + j].color = vertexarray[(i-10) * width + j].color;
             }
-            else if (j < width - 10 && task == "down")
+            else
+            {
+                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
+                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                complex_num point;
+                point.set_real(x_coor);
+                point.set_img(y_coor);
+                complex_num z = point;
+                int iterations = 0; //keep track of the number of iterations
+                for (int k = 0; k < precision; k++)
+                {
+                    complex_num z_new;
+                    z_new = z * z;
+                    z_new = z_new + point;
+                    z = z_new;
+                    iterations++;
+                    if (z.get_magnitude() > 3)
+                        break;
+                }
+                //color pixel based on the number of iterations
+                if (iterations < precision / 4.0f)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
+                    vertexarray[i * width + j].color = color;
+                }
+                else if (iterations < precision / 2.0f)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
+                    vertexarray[i * width + j].color = color;
+                }
+                else if (iterations < precision)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(0, 0, iterations * 255.0f / precision);
+                    vertexarray[i * width + j].color = color;
+                }
+                else
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(150, 150, 150);
+                    vertexarray[i * width + j].color = color;
+                }
+            }
+            // colour this differently
+        }
+    }
+}
+void shift_image_left(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+{
+    //assume right is pressed.
+    // This means we recalculate only when j>width-10(say)
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = width-1; j>=0 ; j--)
+        {
+            if (j > 10)
+            {
+                vertexarray[i * width + j].color = vertexarray[i * width + j - 10].color;
+            }
+            else
+            {
+                long double x_coor = ((long double)j + pixel_shift_x) / int(zoom);
+                long double y_coor = ((long double)i + pixel_shift_y) / int(zoom);
+                complex_num point;
+                point.set_real(x_coor);
+                point.set_img(y_coor);
+                complex_num z = point;
+                int iterations = 0; //keep track of the number of iterations
+                for (int k = 0; k < precision; k++)
+                {
+                    complex_num z_new;
+                    z_new = z * z;
+                    z_new = z_new + point;
+                    z = z_new;
+                    iterations++;
+                    if (z.get_magnitude() > 3)
+                        break;
+                }
+                //color pixel based on the number of iterations
+                if (iterations < precision / 4.0f)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
+                    vertexarray[i * width + j].color = color;
+                }
+                else if (iterations < precision / 2.0f)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
+                    vertexarray[i * width + j].color = color;
+                }
+                else if (iterations < precision)
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(0, 0, iterations * 255.0f / precision);
+                    vertexarray[i * width + j].color = color;
+                }
+                else
+                {
+                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
+                    sf::Color color(150, 150, 150);
+                    vertexarray[i * width + j].color = color;
+                }
+            }
+            // colour this differently
+        }
+    }
+}
+void shift_image_right(sf::VertexArray &vertexarray, int pixel_shift_x, int pixel_shift_y, int precision, float zoom)
+{
+    //assume right is pressed.
+    // This means we recalculate only when j>width-10(say)
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            if (j < width - 10)
             {
                 vertexarray[i * width + j].color = vertexarray[i * width + j + 10].color;
             }
@@ -278,23 +448,23 @@ int main()
                 if (event.key.code == sf::Keyboard::Up)
                 {
                     y_shift -= 10;
-                    shift_image(pointmap, x_shift, y_shift, precision, zoom, "up");
+                    shift_image_up(pointmap, x_shift, y_shift, precision, zoom);
                 }
                 if (event.key.code == sf::Keyboard::Down)
                 {
                     y_shift += 10;
-                    shift_image(pointmap, x_shift, y_shift, precision, zoom, "down");
+                    shift_image_down(pointmap, x_shift, y_shift, precision, zoom);
                 }
                 if (event.key.code == sf::Keyboard::Left)
                 {
                     x_shift -= 10;
-                    shift_image(pointmap, x_shift, y_shift, precision, zoom, "left");
+                    shift_image_left(pointmap, x_shift, y_shift, precision, zoom);
                 }
                 if (event.key.code == sf::Keyboard::Right)
                 {
 
                     x_shift += 10;
-                    shift_image(pointmap, x_shift, y_shift, precision, zoom, "right");
+                    shift_image_right(pointmap, x_shift, y_shift, precision, zoom);
                 }
             }
         }
