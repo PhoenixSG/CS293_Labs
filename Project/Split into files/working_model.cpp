@@ -2,6 +2,8 @@
 #include <bits/stdc++.h>
 #include "complex.cpp"
 #include "mandelbrot.cpp"
+#include "julia.cpp"
+
 using namespace std;
 //resolution of the window
 const int width = 1280;
@@ -27,33 +29,11 @@ void shift_image_down(sf::VertexArray &vertexarray, int coordinate_shift_x, int 
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = mandelbrot(x_coor, y_coor, precision);
+                int iterations = in_mandelbrot(x_coor, y_coor, precision);
+                mandelbrot_coloring(i, j, iterations, precision, vertexarray);
 
-                //color pixel based on the number of iterations
-                if (iterations < precision / 4.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision / 2.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, 0, iterations * 255.0f / precision);
-                    vertexarray[i * width + j].color = color;
-                }
-                else
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(150, 150, 150);
-                    vertexarray[i * width + j].color = color;
-                }
+                // int iterations = julia(x_coor, y_coor, precision, complex_num(0.285, 0.01));
+                // julia_coloring(i, j, iterations, precision, vertexarray);
             }
             // colour this differently
         }
@@ -79,32 +59,10 @@ void shift_image_up(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = mandelbrot(x_coor, y_coor, precision);
-                //color pixel based on the number of iterations
-                if (iterations < precision / 4.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision / 2.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, 0, iterations * 255.0f / precision);
-                    vertexarray[i * width + j].color = color;
-                }
-                else
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(150, 150, 150);
-                    vertexarray[i * width + j].color = color;
-                }
+                int iterations = in_mandelbrot(x_coor, y_coor, precision);
+                mandelbrot_coloring(i, j, iterations, precision, vertexarray);
+
+                // int iterations = julia(x_coor, y_coor, precision, complex_num(0.285, 0.01));
             }
             // colour this differently
         }
@@ -130,32 +88,10 @@ void shift_image_left(sf::VertexArray &vertexarray, int coordinate_shift_x, int 
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = mandelbrot(x_coor, y_coor, precision);
-                //color pixel based on the number of iterations
-                if (iterations < precision / 4.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision / 2.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, 0, iterations * 255.0f / precision);
-                    vertexarray[i * width + j].color = color;
-                }
-                else
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(150, 150, 150);
-                    vertexarray[i * width + j].color = color;
-                }
+                int iterations = in_mandelbrot(x_coor, y_coor, precision);
+                mandelbrot_coloring(i, j, iterations, precision, vertexarray);
+
+                // int iterations = julia(x_coor, y_coor, precision, complex_num(0.285, 0.01));
             }
             // colour this differently
         }
@@ -181,39 +117,17 @@ void shift_image_right(sf::VertexArray &vertexarray, int coordinate_shift_x, int
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = mandelbrot(x_coor, y_coor, precision);
-                //color pixel based on the number of iterations
-                if (iterations < precision / 4.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision / 2.0f)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
-                    vertexarray[i * width + j].color = color;
-                }
-                else if (iterations < precision)
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(0, 0, iterations * 255.0f / precision);
-                    vertexarray[i * width + j].color = color;
-                }
-                else
-                {
-                    // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                    sf::Color color(150, 150, 150);
-                    vertexarray[i * width + j].color = color;
-                }
+                int iterations = in_mandelbrot(x_coor, y_coor, precision);
+                mandelbrot_coloring(i, j, iterations, precision, vertexarray);
+
+                // int iterations = julia(x_coor, y_coor, precision, complex_num(0.285, 0.01));
             }
             // colour this differently
         }
     }
 }
 
-void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
+void generate_mandelhbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
 #pragma omp parallel for
     for (int i = 0; i < height; i++)
@@ -226,35 +140,43 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_
             point.set_real(x_coor);
             point.set_img(y_coor);
             complex_num z = point;
-            int iterations = mandelbrot(x_coor, y_coor, precision);
-            //color pixel based on the number of iterations
-            if (iterations < precision / 4.0f)
-            {
-                // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(iterations * 255.0f / (precision / 4.0f), 0, 0);
-                vertexarray[i * width + j].color = color;
-            }
-            else if (iterations < precision / 2.0f)
-            {
-                // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(0, iterations * 255.0f / (precision / 2.0f), 0);
-                vertexarray[i * width + j].color = color;
-            }
-            else if (iterations < precision)
-            {
-                // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(0, 0, iterations * 255.0f / precision);
-                vertexarray[i * width + j].color = color;
-            }
-            else
-            {
-                // vertexarray[i * width + j].position = sf::Vector2f(j, i);
-                sf::Color color(150, 150, 150);
-                vertexarray[i * width + j].color = color;
-            }
-            // colour this differently
+            int iterations = in_mandelbrot(x_coor, y_coor, precision);
+            mandelbrot_coloring(i, j, iterations, precision, vertexarray);
         }
     }
+    cout << "ZOOM is " << zoom << " and precision level is " << precision << endl;
+    cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
+}
+
+void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
+{
+    int iterations[height][width];
+    int maximum = 0;
+#pragma omp parallel for
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+            long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
+            complex_num point;
+            point.set_real(x_coor);
+            point.set_img(y_coor);
+            complex_num z = point;
+            iterations[i][j] = julia(x_coor, y_coor, precision, complex_num(0.285, 0.01));
+            maximum = max(iterations[i][j], maximum);
+            
+        }
+    }
+    cout<<maximum<<endl;
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            julia_coloring(i, j, iterations[i][j], maximum, vertexarray);
+        }
+    }
+
     cout << "ZOOM is " << zoom << " and precision level is " << precision << endl;
     cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
 }

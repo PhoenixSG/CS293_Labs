@@ -12,6 +12,7 @@ public:
     void set_real(long double real);
     void set_img(long double img);
     long double get_magnitude();
+    long double get_magnitude_squared();
     long double get_angle();
     complex_num operator*(complex_num object);
     complex_num operator+(complex_num object);

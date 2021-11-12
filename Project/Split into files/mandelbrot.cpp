@@ -1,6 +1,8 @@
 #include "complex.cpp"
+#include "mandelbrot_coloring.cpp"
 
-int mandelbrot(long double x, long double y, int precision)
+
+int in_mandelbrot(long double x, long double y, int precision)
 {
     complex_num point;
     point.set_real(x);
@@ -14,7 +16,7 @@ int mandelbrot(long double x, long double y, int precision)
         z_new = z_new + point;
         z = z_new;
         iterations++;
-        if (z.get_magnitude() > 3)
+        if (z.get_magnitude_squared() > 4)
             break;
     }
     return iterations;

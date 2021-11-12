@@ -1,4 +1,5 @@
 #include "complex.cpp"
+#include "julia_coloring.cpp"
 
 int julia(long double x, long double y, int precision, complex_num constant)
 {
@@ -15,8 +16,8 @@ int julia(long double x, long double y, int precision, complex_num constant)
         z = z * z;
         z = z + point;
         iterations++;
-        long double magnitude = z.get_magnitude();
-        if (magnitude > 3)
+        long double magnitude = z.get_magnitude_squared();
+        if (magnitude > 4)
            return iterations + 1 - log(log2(magnitude));
     }
     return iterations;

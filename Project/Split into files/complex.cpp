@@ -34,6 +34,10 @@ long double complex_num::get_magnitude()
 {
     return sqrt(real_part * real_part + imaginary_part * imaginary_part);
 }
+long double complex_num::get_magnitude_squared()
+{
+    return real_part * real_part + imaginary_part * imaginary_part;
+}
 long double complex_num::get_angle()
 {
     return atan(imaginary_part / real_part);
