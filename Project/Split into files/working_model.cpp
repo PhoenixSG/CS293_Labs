@@ -1,70 +1,12 @@
 #include "SFML/Graphics.hpp"
 #include <bits/stdc++.h>
-
+#include "complex.cpp"
+#include "mandelbrot.cpp"
 using namespace std;
 //resolution of the window
 const int width = 1280;
 const int height = 720;
 
-//used for complex numbers
-class complex_num
-{
-private:
-    long double real_part;
-    long double imaginary_part;
-
-public:
-
-    complex_num(long double real, long double imaginary){
-        real_part = real;
-        imaginary_part = imaginary;
-    }
-    complex_num(){
-        real_part = 0;
-        imaginary_part = 0;
-    }
-    long double get_real()
-    {
-        return real_part;
-    }
-    long double get_img()
-    {
-        return imaginary_part;
-    }
-    void set_real(long double real)
-    {
-        real_part = real;
-    }
-    void set_img(long double img)
-    {
-        imaginary_part = img;
-    }
-    long double get_magnitude()
-    {
-        return sqrt(real_part * real_part + imaginary_part * imaginary_part);
-    }
-    long double get_angle()
-    {
-        return atan(imaginary_part / real_part);
-    }
-    complex_num operator*(complex_num object)
-    {
-        complex_num product;
-        product.set_real(real_part * object.get_real() - imaginary_part * object.get_img());
-        product.set_img(real_part * object.get_img() + imaginary_part * object.get_real());
-        return product;
-    }
-    complex_num operator+(complex_num object)
-    {
-        complex_num sum;
-        sum.set_real(real_part + object.get_real());
-        sum.set_img(imaginary_part + object.get_img());
-        return sum;
-    }
-
-    // over load addition
-    // simple tasks
-};
 void shift_image_down(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
     //assume right is pressed.
@@ -85,17 +27,8 @@ void shift_image_down(sf::VertexArray &vertexarray, int coordinate_shift_x, int 
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = 0; //keep track of the number of iterations
-                for (int k = 0; k < precision; k++)
-                {
-                    complex_num z_new;
-                    z_new = z * z;
-                    z_new = z_new + point;
-                    z = z_new;
-                    iterations++;
-                    if (z.get_magnitude() > 3)
-                        break;
-                }
+                int iterations = mandelbrot(x_coor, y_coor, precision);
+
                 //color pixel based on the number of iterations
                 if (iterations < precision / 4.0f)
                 {
@@ -146,17 +79,7 @@ void shift_image_up(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = 0; //keep track of the number of iterations
-                for (int k = 0; k < precision; k++)
-                {
-                    complex_num z_new;
-                    z_new = z * z;
-                    z_new = z_new + point;
-                    z = z_new;
-                    iterations++;
-                    if (z.get_magnitude() > 3)
-                        break;
-                }
+                int iterations = mandelbrot(x_coor, y_coor, precision);
                 //color pixel based on the number of iterations
                 if (iterations < precision / 4.0f)
                 {
@@ -207,17 +130,7 @@ void shift_image_left(sf::VertexArray &vertexarray, int coordinate_shift_x, int 
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = 0; //keep track of the number of iterations
-                for (int k = 0; k < precision; k++)
-                {
-                    complex_num z_new;
-                    z_new = z * z;
-                    z_new = z_new + point;
-                    z = z_new;
-                    iterations++;
-                    if (z.get_magnitude() > 3)
-                        break;
-                }
+                int iterations = mandelbrot(x_coor, y_coor, precision);
                 //color pixel based on the number of iterations
                 if (iterations < precision / 4.0f)
                 {
@@ -268,17 +181,7 @@ void shift_image_right(sf::VertexArray &vertexarray, int coordinate_shift_x, int
                 point.set_real(x_coor);
                 point.set_img(y_coor);
                 complex_num z = point;
-                int iterations = 0; //keep track of the number of iterations
-                for (int k = 0; k < precision; k++)
-                {
-                    complex_num z_new;
-                    z_new = z * z;
-                    z_new = z_new + point;
-                    z = z_new;
-                    iterations++;
-                    if (z.get_magnitude() > 3)
-                        break;
-                }
+                int iterations = mandelbrot(x_coor, y_coor, precision);
                 //color pixel based on the number of iterations
                 if (iterations < precision / 4.0f)
                 {
@@ -323,17 +226,7 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_
             point.set_real(x_coor);
             point.set_img(y_coor);
             complex_num z = point;
-            int iterations = 0; //keep track of the number of iterations
-            for (int k = 0; k < precision; k++)
-            {
-                complex_num z_new;
-                z_new = z * z;
-                z_new = z_new + point;
-                z = z_new;
-                iterations++;
-                if (z.get_magnitude() > 3)
-                    break;
-            }
+            int iterations = mandelbrot(x_coor, y_coor, precision);
             //color pixel based on the number of iterations
             if (iterations < precision / 4.0f)
             {
@@ -364,7 +257,6 @@ void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_
     }
     cout << "ZOOM is " << zoom << " and precision level is " << precision << endl;
     cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
-
 }
 
 int main()
@@ -479,10 +371,10 @@ int main()
                 }
                 if (event.key.code == sf::Keyboard::R)
                 {
-                    int random_number = 10.0*rand()/RAND_MAX+1;
-                    cout<<random_number<<endl;
-                    zoom = min(pow(10, 9),256.0f*pow(2, random_number));
-                    precision = min(4000, 100+200*random_number);
+                    int random_number = 10.0 * rand() / RAND_MAX + 1;
+                    cout << random_number << endl;
+                    zoom = min(pow(10, 9), 256.0f * pow(2, random_number));
+                    precision = min(4000, 100 + 200 * random_number);
                     // x_shift = ((rand()%2)*2-1)*rand();
                     // y_shift = ((rand()%2)*2-1)*rand();
                     generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
