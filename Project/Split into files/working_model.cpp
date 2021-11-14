@@ -3,6 +3,7 @@
 #include "complex.cpp"
 #include "mandelbrot.cpp"
 #include "julia.cpp"
+// #include "textbox.cpp"
 
 using namespace std;
 //resolution of the window
