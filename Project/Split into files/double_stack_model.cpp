@@ -11,7 +11,7 @@ image_dequeue ::image_dequeue()
 
 bool image_dequeue::isEmpty()
 {
-    return size()==0;
+    return size() == 0;
     //sign of empty queue
 }
 
@@ -32,10 +32,9 @@ void image_dequeue::grow()
     image_sfml *B = A; //holder temporary variable, will be destroyed after this function.
 
     //creating new larger array
-    
+
     // A = new double[nextSizeLinear()];
-    A = new image_sfml[nextSize()]; 
-    
+    A = new image_sfml[nextSize()];
 
     int size_till_now = size(), k;
     for (int i = 0; i < size_till_now; i++)
@@ -98,7 +97,7 @@ bool image_dequeue::removeRear(image_sfml *x)
     //if control reaches here, means queue is non-empty
     //assign and value and remove the element by bringing nack the r index
 
-    *x = A[(r-1+N)%N];
+    *x = A[(r - 1 + N) % N];
     r = (r + N - 1) % N;
     return true;
 }
@@ -123,6 +122,37 @@ bool image_dequeue::rear(image_sfml *x)
     }
     //if control reaches here, means queue is non-empty
     //assign and value.
-    *x = A[(r-1+N)%N];
+    *x = A[(r - 1 + N) % N];
     return true;
+}
+
+void double_stack::insert(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray)
+{
+    image_sfml *new_image = new image_sfml();
+    new_image->save_image_parameters(x_shift, y_shift, resolution, zoom, vertexarray);
+    first.insertFront(*new_image);
+}
+
+void double_stack::delete_current_image(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray)
+{
+    image_sfml *current_image = new image_sfml();
+    first.removeFront(current_image);
+}
+
+void double_stack::move_left()
+{
+    image_sfml *removed_image = new image_sfml();
+    first.removeFront(removed_image);
+    second.insertFront(*removed_image);
+}
+
+void double_stack::move_right()
+{
+    if (second.isEmpty())
+    {
+        return;
+    }
+    image_sfml *removed_image = new image_sfml();
+    second.removeFront(removed_image);
+    first.insertFront(*removed_image);
 }

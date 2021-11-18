@@ -1,6 +1,6 @@
 #ifndef STACK
 #define STACK
-
+#include "SFML/Graphics.hpp"
 #include "image.cpp"
 
 #define GROWTH_FACTOR 2
@@ -15,12 +15,13 @@ private:
     unsigned int r;
     unsigned int nextSize() { return N * GROWTH_FACTOR; }
 
-public:
-    image_dequeue();
-    bool isEmpty();
     bool isFull();
-    void grow();
     unsigned int size();
+    void grow();
+
+public:
+    bool isEmpty();
+    image_dequeue();
     void insertFront(image_sfml x);
     void insertRear(image_sfml x);
     bool removeFront(image_sfml *x);
@@ -45,19 +46,25 @@ public:
 // A right move means to pop from 2 and push onto 1.
 // A left move mean to pop from 1 and push onto 2.
 // Insertions always happen on 1 and control/current image is always on the 1st stack
+// You can also delete an unwanted image.
 class double_stack
 {
 private:
-public:
-};
+    image_dequeue first;
+    image_dequeue second;
 
+public:
+    void insert(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray);
+    void delete_current_image(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray);
+    void move_left();
+    void move_right();
+};
 
 //This is another data structure using the dequeue class.
 //This structure returns a random image from the set of images stored.
 //The way we achieve this is by
-class random_sampling{
-
-
+class random_sampling
+{
 };
 
 #endif
