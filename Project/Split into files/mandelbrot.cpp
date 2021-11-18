@@ -1,3 +1,6 @@
+#ifndef MANDELBROT
+#define MANDELBROT
+
 #include "complex.cpp"
 #include "mandelbrot_coloring.cpp"
 
@@ -21,3 +24,4 @@ int in_mandelbrot(long double x, long double y, int precision)
     }
     return iterations;
 }
+#endif
