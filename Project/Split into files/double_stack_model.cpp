@@ -2,6 +2,7 @@
 #define STACK
 
 #include "double_stack_model.h"
+#include <iostream>
 
 image_dequeue ::image_dequeue()
 {
@@ -130,6 +131,19 @@ bool image_dequeue::rear(image_sfml *x)
     return true;
 }
 
+bool image_dequeue::find_image(int number_of_image, image_sfml *image_pointer)
+{
+    //size is N+r-f
+    // std::cout << size() << std::endl;
+    if (number_of_image < size())
+    {
+        *image_pointer = A[(f + number_of_image-1) % N];
+        return true;
+    }
+    image_pointer = new image_sfml();
+    return false;
+}
+
 void double_stack::insert(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray)
 {
     image_sfml *new_image = new image_sfml();
@@ -139,6 +153,7 @@ void double_stack::insert(long double x_shift, long double y_shift, int resoluti
 
 void double_stack::delete_current_image(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray)
 {
+    //Removes the current image from the sequence.
     image_sfml *current_image = new image_sfml();
     first.removeFront(current_image);
     delete current_image;
@@ -170,6 +185,8 @@ bool double_stack::move_right()
 
 unsigned int double_stack::return_current(image_sfml *image_pointer)
 {
+    //returns the current element in focus
+    //This is the top of the first stack.
     first.front(image_pointer);
     return first.size();
 }
@@ -177,6 +194,22 @@ unsigned int double_stack::return_current(image_sfml *image_pointer)
 int double_stack::get_size()
 {
     return first.size() + second.size();
+}
+
+image_sfml *double_stack::find_image(int number_of_image)
+{
+    image_sfml *image_pointer = new image_sfml();
+    while(move_right()){
+        ;
+    }
+    if (first.find_image(get_size()- number_of_image+1, image_pointer))
+    {
+        return image_pointer;
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 #endif

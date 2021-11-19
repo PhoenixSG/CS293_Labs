@@ -75,7 +75,7 @@ bool Button::is_Mouse_Over(sf::RenderWindow &window) {
 	int btnxPosWidth = button.getPosition().x + button.getGlobalBounds().width;
 	int btnyPosHeight = button.getPosition().y + button.getGlobalBounds().height;
 
-	if (mouseX < btnxPosWidth + 20 && mouseX > btnPosX - 20 && mouseY < btnyPosHeight + 20 && mouseY > btnPosY - 20) {
+	if (mouseX < btnxPosWidth + 10 && mouseX > btnPosX - 10 && mouseY < btnyPosHeight + 10 && mouseY > btnPosY - 10) {
 		return true;
 	}
 	return false;

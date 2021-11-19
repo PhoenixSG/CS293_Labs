@@ -3,6 +3,8 @@
 
 #include "image.h"
 #include "dimension_set.h"
+#include <string>
+
 
 void image_sfml::save_image_parameters(int x_shift, int y_shift, int resolution, float zoom, sf::VertexArray vertexarray)
 {
@@ -25,9 +27,19 @@ void image_sfml::retrieve_image_parameters(int &x_shift, int &y_shift, int &reso
 
 image_sfml::image_sfml()
 {
-    this->x_shift = -width/2;
-    this->y_shift = -height/2;
+    this->x_shift = -width / 2;
+    this->y_shift = -height / 2;
     this->zoom = 256;
     this->resolution = 100;
+    this->name = "";
+}
+void image_sfml::set_name(std::string name_input)
+{
+    this->name.assign(name_input);
+    std::cout<<this->name<<std::endl;
+}
+std::string image_sfml::get_name()
+{
+    return std::string(this->name);
 }
 #endif

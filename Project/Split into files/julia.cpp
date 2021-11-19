@@ -1,3 +1,6 @@
+#ifndef JULIA
+#define JULIA
+
 #include "complex.cpp"
 #include "julia_coloring.cpp"
 
@@ -22,3 +25,5 @@ int julia(long double x, long double y, int precision, complex_num constant)
     }
     return iterations;
 }
+
+#endif

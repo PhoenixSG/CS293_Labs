@@ -1,6 +1,9 @@
 #include "SFML/Graphics.hpp"
 #include "dimension_set.h"
 
+#ifndef INVERSIONS
+#define INVERSIONS
+
 void invert_colours(sf::VertexArray &vertexarray)
 {
 #pragma omp parallel for
@@ -13,6 +16,10 @@ void invert_colours(sf::VertexArray &vertexarray)
         }
     }
 }
+#endif
+
+// Colour based on the number of iterations.
+
 
 void mandelbrot_coloring(int i, int j, int iterations, int total, sf::VertexArray &vertexarray, bool inversion)
 {

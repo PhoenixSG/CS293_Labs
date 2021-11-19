@@ -13,6 +13,14 @@ using namespace std;
 
 int chosen_graph = 1;
 bool inversion = false;
+int julia_max = 0;
+
+//This is the main function in which which we assign a coordinate to each pixel
+//Since we are constantly translating and zooming into the cartesian plane, for every new value we need to remap our pixels.
+//The coordinates thus obtained are passed through the mandelbrot, julia etc. fucntions and henceforth coloured.
+
+//In order to save space, we repeatedly call colour fucntion for each pixel after determining its value.
+//Otherwise we would be needing another structure to hold all the values at one place, which seems useless here.
 
 void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
@@ -53,6 +61,7 @@ void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
                 complex_num z = point;
                 iterations[i][j] = julia(x_coor, y_coor, resolution, complex_num(0.285, 0.01));
                 maximum = max(iterations[i][j], maximum);
+                julia_max = maximum;
             }
         }
         // cout << maximum << endl;
@@ -60,7 +69,7 @@ void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
         {
             for (int j = 0; j < width; j++)
             {
-                julia_coloring(i, j, iterations[i][j], maximum, vertexarray);
+                julia_coloring(i, j, iterations[i][j], maximum, vertexarray, inversion);
             }
         }
 
@@ -68,10 +77,9 @@ void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
         // cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
     }
 }
-
 int main()
 {
-    cout << "Hello and Welcome to my Mandelbort Set Project.\n";
+    cout << "Hello and Welcome to my Mandelbrot Set Project.\n";
     cout << "Please read the Instructions in the README file before proceeding.\n";
     cout << "Here you find and interactive graph which you can use to study various properties of different graphs\n";
     cout << "Please choose the graph you like!\n\n";
@@ -110,6 +118,10 @@ int main()
             pointmap[i * width + j].position = sf::Vector2f(j, i);
         }
     }
+
+    //Till now we have initialised the different objects and variables and now we have our first window forming.
+    //Here, we are given a choice between Mandelbrot and Julia sets and this makes it easier to add other functions in the future as well.
+    //We can choose whichever option we like.
 
     while (window.isOpen())
     {
@@ -151,6 +163,10 @@ int main()
         }
     }
     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+
+    //What follows is a set of various key mappings to different commands and we observe a variety of features.
+
+    //These are mostly self explanatory and if you wish, you can read the README file which would better outline all the features.
 
     while (window.isOpen())
     {
@@ -223,23 +239,23 @@ int main()
                 if (event.key.code == sf::Keyboard::Up)
                 {
                     y_shift -= 10;
-                    shift_image_up(pointmap, x_shift, y_shift, resolution, zoom, inversion);
+                    shift_image_up( chosen_graph, pointmap, x_shift, y_shift, resolution, zoom, inversion,julia_max);
                 }
                 else if (event.key.code == sf::Keyboard::Down)
                 {
                     y_shift += 10;
-                    shift_image_down(pointmap, x_shift, y_shift, resolution, zoom, inversion);
+                    shift_image_down(chosen_graph, pointmap, x_shift, y_shift, resolution, zoom, inversion, julia_max);
                 }
                 else if (event.key.code == sf::Keyboard::Left)
                 {
                     x_shift -= 10;
-                    shift_image_left(pointmap, x_shift, y_shift, resolution, zoom, inversion);
+                    shift_image_left(chosen_graph, pointmap, x_shift, y_shift, resolution, zoom, inversion, julia_max);
                 }
                 else if (event.key.code == sf::Keyboard::Right)
                 {
 
                     x_shift += 10;
-                    shift_image_right(pointmap, x_shift, y_shift, resolution, zoom, inversion);
+                    shift_image_right(chosen_graph, pointmap, x_shift, y_shift, resolution, zoom, inversion, julia_max);
                 }
                 else if (event.key.code == sf::Keyboard::R)
                 {
@@ -283,7 +299,7 @@ int main()
                 {
                     texture.create(window.getSize().x, window.getSize().y);
                     texture.update(window);
-                    if (texture.copyToImage().saveToFile("Zoom- " + to_string(zoom) + ", Resolution- " + to_string(resolution) + ".jpg"))
+                    if (texture.copyToImage().saveToFile("Zoom- " + to_string(zoom) + ", Resolution- " + to_string(resolution) + ", X_shift- " + to_string(x_shift) + ", Y_shift- " + to_string(y_shift) + ".jpg"))
                     {
                         cout << "Screenshot saved!" << endl;
                     }
@@ -303,6 +319,13 @@ int main()
                     cout << "Save Image in List" << endl;
 
                     saved_list.insert(x_shift, y_shift, resolution, zoom, pointmap);
+                    image_sfml *current_image = new image_sfml();
+                    saved_list.return_current(current_image);
+                    // cout << "Please Enter name of the image" << endl;
+                    // string name;
+                    // cin >> name;
+                    // current_image->set_name(name);
+                    // cout<<current_image->get_name()<<endl;
                     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.key.code == sf::Keyboard::W)
@@ -348,6 +371,22 @@ int main()
                     inversion = !inversion;
                     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
+                else if (event.key.code == sf::Keyboard::L)
+                {
+                    cout << "Enter the number of your Image- " << endl;
+                    int input_number;
+                    cin >> input_number;
+                    image_sfml *found_image = saved_list.find_image(input_number);
+                    if (found_image != nullptr)
+                    {
+                        found_image->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
+                        generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                    }
+                    else
+                    {
+                        cout << "There is no such image!" << endl;
+                    }
+                }
                 else if (event.key.code == sf::Keyboard::Q)
                 {
                     while (saved_list.move_right())
@@ -364,8 +403,8 @@ int main()
                         window.clear();
                         window.draw(pointmap);
                         window.display();
-                        sf::sleep(sf::milliseconds(2000));
-                        delete image_pointer;
+                        sf::sleep(sf::milliseconds(1000));
+                        // delete image_pointer;
                     } while (saved_list.move_left());
                     do
                     {
@@ -377,8 +416,8 @@ int main()
                         window.clear();
                         window.draw(pointmap);
                         window.display();
-                        sf::sleep(sf::milliseconds(2000));
-                        delete image_pointer;
+                        sf::sleep(sf::milliseconds(1000));
+                        // delete image_pointer;
                     } while (saved_list.move_right());
                 }
                 else if (event.key.code == sf::Keyboard::X)
@@ -392,6 +431,30 @@ int main()
         window.draw(pointmap);
         window.display();
     }
+
+    //Thus, we has options to-
+    
+    //Adjust resolution
+    //Move around
+    //Zoom in, via keyboard or mouse
+    //Double stack model to keep track of checkpoints
+    //Queue traversal animation
+    //Random Element drawing from the set.
+    //Take a screenshot
+    //Julia set as well
+    //Inversion of colours
+    //Vectors to save overcalculation in case of linear movement
+    //Dictionary to load the required image by its index
+
+
+
+    //Algorithmic points in the project-
+
+    //Scaling and shifting appropriately wrt mouse pointer at location of zoom in and zoom out.
+    //Variable Precision to better tradeoff between accuracy and time taken.
+
+
+    
 
     return 0;
 }

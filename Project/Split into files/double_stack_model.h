@@ -26,6 +26,7 @@ public:
     bool removeRear(image_sfml *x);
     bool front(image_sfml *x);
     bool rear(image_sfml *x);
+    bool find_image(int number_of_image, image_sfml *image_pointer);
 };
 
 //This is a unique double stack model I thought to store and traverse through a set of values.
@@ -56,7 +57,9 @@ public:
     void delete_current_image(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray);
     bool move_left();
     bool move_right();
+    image_sfml* find_image(int number_of_image);
+    //Both move_left and move_right help us move within our sequence.
+
     int get_size();
     unsigned int return_current(image_sfml *image_pointer);
 };
-

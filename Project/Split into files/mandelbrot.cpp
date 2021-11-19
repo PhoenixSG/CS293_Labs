@@ -4,6 +4,13 @@
 #include "complex.cpp"
 #include "mandelbrot_coloring.cpp"
 
+//This is the main function of the mandelbrot set.
+//This calculates the number of iterations a point can be squared and shifted by a predefined algo, before it passes a threshold
+//The number of iterations gives the value of that point.
+//This value is then converted to a colour and thus, we see the graph
+
+//We have also introduced variable level of precision which allows for a better tradeoff between time taken and accuracy.
+
 
 int in_mandelbrot(long double x, long double y, int precision)
 {

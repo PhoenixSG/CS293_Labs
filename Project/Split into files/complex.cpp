@@ -34,6 +34,8 @@ long double complex_num::get_magnitude()
 {
     return sqrt(real_part * real_part + imaginary_part * imaginary_part);
 }
+
+//This function prevents the use of sqrt() function for the magnitude and helps speeden up the calculation
 long double complex_num::get_magnitude_squared()
 {
     return real_part * real_part + imaginary_part * imaginary_part;
@@ -54,6 +56,13 @@ complex_num complex_num::operator+(complex_num object)
     complex_num sum;
     sum.set_real(real_part + object.get_real());
     sum.set_img(imaginary_part + object.get_img());
+    return sum;
+}
+complex_num complex_num::operator-(complex_num object)
+{
+    complex_num sum;
+    sum.set_real(real_part - object.get_real());
+    sum.set_img(imaginary_part - object.get_img());
     return sum;
 }
 #endif
