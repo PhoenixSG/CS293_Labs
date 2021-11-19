@@ -1,4 +1,8 @@
+#ifndef STACK
+#define STACK
+
 #include "double_stack_model.h"
+
 image_dequeue ::image_dequeue()
 {
     N = INIT_SIZE;
@@ -137,22 +141,36 @@ void double_stack::delete_current_image(long double x_shift, long double y_shift
 {
     image_sfml *current_image = new image_sfml();
     first.removeFront(current_image);
+    delete current_image;
 }
 
-void double_stack::move_left()
+bool double_stack::move_left()
 {
+    if (first.size()<=1)
+    {
+        return false ;
+    }
     image_sfml *removed_image = new image_sfml();
     first.removeFront(removed_image);
     second.insertFront(*removed_image);
+    return true;
 }
 
-void double_stack::move_right()
+bool double_stack::move_right()
 {
     if (second.isEmpty())
     {
-        return;
+        return false;
     }
     image_sfml *removed_image = new image_sfml();
     second.removeFront(removed_image);
     first.insertFront(*removed_image);
+    return true;
 }
+
+bool double_stack::return_current(image_sfml *image_pointer)
+{ 
+    return first.front(image_pointer);
+}
+
+#endif

@@ -5,13 +5,11 @@
 #include "julia.cpp"
 #include "shift_and_zoom.cpp"
 #include "dimension_set.h"
+#include "double_stack_model.cpp"
 // #include "textbox.cpp"
 
 using namespace std;
 //resolution of the window
-
-
-
 
 void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
@@ -51,10 +49,9 @@ void generate_mandelfbrot_set(sf::VertexArray &vertexarray, int coordinate_shift
             complex_num z = point;
             iterations[i][j] = julia(x_coor, y_coor, resolution, complex_num(0.285, 0.01));
             maximum = max(iterations[i][j], maximum);
-            
         }
     }
-    cout<<maximum<<endl;
+    cout << maximum << endl;
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -63,16 +60,20 @@ void generate_mandelfbrot_set(sf::VertexArray &vertexarray, int coordinate_shift
         }
     }
 
-    cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
-    cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
+    // cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
+    // cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
 }
 
 int main()
 {
+    cout << "Hello and Welcome to my Mandelbort Set Project.\nThis i" << endl;
     sf::String heading = "Mandelbrot Set Plotter";
     sf::RenderWindow window(sf::VideoMode(width, height), heading);
-    window.setFramerateLimit(30);
+    window.setFramerateLimit(100);
     sf::VertexArray pointmap(sf::Points, width * height);
+    sf::Texture texture;
+
+    double_stack saved_list;
 
     float zoom = 256.0f;
     int resolution = 100;
@@ -161,23 +162,23 @@ int main()
                     y_shift -= 10;
                     shift_image_up(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::Down)
+                else if (event.key.code == sf::Keyboard::Down)
                 {
                     y_shift += 10;
                     shift_image_down(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::Left)
+                else if (event.key.code == sf::Keyboard::Left)
                 {
                     x_shift -= 10;
                     shift_image_left(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::Right)
+                else if (event.key.code == sf::Keyboard::Right)
                 {
 
                     x_shift += 10;
                     shift_image_right(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::R)
+                else if (event.key.code == sf::Keyboard::R)
                 {
                     int random_number = 10.0 * rand() / RAND_MAX + 1;
                     cout << random_number << endl;
@@ -187,26 +188,77 @@ int main()
                     // y_shift = ((rand()%2)*2-1)*rand();
                     generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::S)
+                else if (event.key.code == sf::Keyboard::RBracket)
                 {
-                    cout<<"Resolution Increased"<<endl;
+                    cout << "Resolution Increased" << endl;
                     resolution = min(4000, resolution + 200);
                     generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::A)
+                else if (event.key.code == sf::Keyboard::LBracket)
                 {
-                    cout<<"Resolution Decreased"<<endl;
+                    cout << "Resolution Decreased" << endl;
                     resolution = max(100, resolution - 200);
                     generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
                 }
-                if (event.key.code == sf::Keyboard::H)
+                else if (event.key.code == sf::Keyboard::C)
                 {
-                    cout<<"Back to Home"<<endl;
+                    texture.create(window.getSize().x, window.getSize().y);
+                    texture.update(window);
+                    if (texture.copyToImage().saveToFile("Zoom- " + to_string(zoom) + ", Resolution- " + to_string(resolution)))
+                    {
+                        cout << "screenshot saved" << endl;
+                    }
+                }
+                else if (event.key.code == sf::Keyboard::H)
+                {
+                    cout << "Back to Home" << endl;
 
                     zoom = 256.0f;
                     resolution = 100;
                     x_shift = -width / 2;
                     y_shift = -height / 2;
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                }
+                else if (event.key.code == sf::Keyboard::S)
+                {
+                    cout << "Save Image in List" << endl;
+
+                    saved_list.insert(x_shift, y_shift, resolution, zoom, pointmap);
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                }
+                else if (event.key.code == sf::Keyboard::W)
+                {
+                    cout << "Load Last Saved Image" << endl;
+                    image_sfml *image_pointer = new image_sfml();
+                    saved_list.return_current(image_pointer);
+                    image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                }
+                else if (event.key.code == sf::Keyboard::A)
+                {
+                    if (!saved_list.move_left())
+                    {
+                        cout<<"Nowhere to move back!"<<endl;
+                        continue;
+                    }
+                    cout << "Move Back in the list" << endl;
+                    image_sfml *image_pointer = new image_sfml();
+                    saved_list.return_current(image_pointer);
+                    image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
+
+                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                }
+                else if (event.key.code == sf::Keyboard::D)
+                {
+                    if (!saved_list.move_right())
+                    {
+                        cout<<"Nowhere to move forward!"<<endl;
+                        continue;
+                    }
+                    cout << "Move Forward in the list" << endl;
+                    image_sfml *image_pointer = new image_sfml();
+                    saved_list.return_current(image_pointer);
+                    image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
                     generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
                 }
             }

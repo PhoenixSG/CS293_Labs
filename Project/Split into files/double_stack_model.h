@@ -1,10 +1,8 @@
-#ifndef STACK
-#define STACK
 #include "SFML/Graphics.hpp"
 #include "image.cpp"
 
 #define GROWTH_FACTOR 2
-#define INIT_SIZE 1000
+#define INIT_SIZE 10
 
 class image_dequeue
 {
@@ -16,10 +14,10 @@ private:
     unsigned int nextSize() { return N * GROWTH_FACTOR; }
 
     bool isFull();
-    unsigned int size();
     void grow();
 
 public:
+    unsigned int size();
     bool isEmpty();
     image_dequeue();
     void insertFront(image_sfml x);
@@ -56,8 +54,9 @@ private:
 public:
     void insert(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray);
     void delete_current_image(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray);
-    void move_left();
-    void move_right();
+    bool move_left();
+    bool move_right();
+    bool return_current(image_sfml *image_pointer);
 };
 
 //This is another data structure using the dequeue class.
@@ -66,5 +65,3 @@ public:
 class random_sampling
 {
 };
-
-#endif
