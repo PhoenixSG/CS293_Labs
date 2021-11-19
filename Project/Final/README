@@ -1,0 +1,49 @@
+Hello and Welcome to my Mandelbrot Set Project.
+
+Run ./script.h in this directory to load the program. The command to install SFML is included in the script. You can choose to comment out that if you already have the software installed.
+
+Here you find an interactive graph which you can use to study various properties of different graphs
+The demo video is located here- https://drive.google.com/file/d/1zavz_n8LZX-4wgdIm3km4eiBjrpZeVIX/view?usp=sharing
+
+
+
+There are several features you can do with this graph.
+
+Thus, we has options to-
+    
+Adjust resolution- Use the '[' and ']' keys to change the level of resolution
+
+Move around- Use the arrow keys to move around in the graph
+
+Zoom in- Use the mouse click or scroll to change the zoom level. The location of your mouse appropriately scales and shifts the graph in an intuitive manner.
+
+Take a screenshot- Press the 'C' key to capture a snapshot.
+
+Double stack model to keep track of checkpoints- Use 'S' key to save an image into a double stack model which models a sequence and allows you to better move in the graph. 
+Use the 'A' and 'D' keys to move in the sequence.
+For more info on the double stack model, please see the code.
+
+Queue traversal animation- Traverse automatically through all elements in the sequence at an interval of 1 second. Traversal in both directions done in the code.
+
+Random Element drawing from the set- Model the sequence as a stack and draw a random image from the sequence.
+
+Inversion of colours- Press 'I' to take the colour negative.
+
+Julia set as well- This is another fractal set which is similar in form but still very different from the Mandelbrot Set. I included this as well to get a better understanding of the differences in the two.
+
+Load the required image by its index- Press the 'L' key followed by the position of the image in the sequence to load that image. Works well with more than 1 image.
+
+
+
+
+
+Algorithmic points in the project-
+
+Vectors to save overcalculation in case of linear movement- The up/down/left/right commands do not recalculate the pixel values for all pixels, thus saving time and energy.
+
+Scaling and shifting appropriately wrt mouse pointer at location of zoom in and zoom out- The scaling formula is carefully designed to perfectly capture the zooming behaviour in modern GUI applications.
+The point directly under cursor stays put, and the remaining points are zoomed in/out from it.
+This required some thought, to come up with a concise and correct implementation.
+
+Variable Precision to better tradeoff between accuracy and time taken- The precision is increased as the zoom level increases, as the necessity to differentiate between nearby pixels efficiently increses.
+This is not as important at low zoom levels, and thus prioritize efficiency there.

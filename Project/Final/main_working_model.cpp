@@ -81,7 +81,7 @@ int main()
 {
     cout << "Hello and Welcome to my Mandelbrot Set Project.\n";
     cout << "Please read the Instructions in the README file before proceeding.\n";
-    cout << "Here you find and interactive graph which you can use to study various properties of different graphs\n";
+    cout << "Here you find an interactive graph which you can use to study various properties of different graphs\n";
     cout << "Please choose the graph you like!\n\n";
 
     sf::String heading = "Mandelbrot Set Plotter";
