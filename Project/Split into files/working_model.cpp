@@ -6,12 +6,13 @@
 #include "shift_and_zoom.cpp"
 #include "dimension_set.h"
 #include "double_stack_model.cpp"
-// #include "textbox.cpp"
+#include "button.cpp"
 
 using namespace std;
 //resolution of the window
 
 int chosen_graph = 1;
+bool inversion = false;
 
 void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
@@ -29,7 +30,7 @@ void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
                 point.set_img(y_coor);
                 complex_num z = point;
                 int iterations = in_mandelbrot(x_coor, y_coor, resolution);
-                mandelbrot_coloring(i, j, iterations, resolution, vertexarray);
+                mandelbrot_coloring(i, j, iterations, resolution, vertexarray, inversion);
             }
         }
         cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
@@ -63,7 +64,7 @@ void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
             }
         }
 
-        cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
+        cout << "ZOOM- " << zoom << " Resolution- " << resolution << endl;
         // cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
     }
 }
@@ -78,8 +79,23 @@ int main()
     sf::String heading = "Mandelbrot Set Plotter";
     sf::RenderWindow window(sf::VideoMode(width, height), heading);
     window.setFramerateLimit(100);
+
     sf::VertexArray pointmap(sf::Points, width * height);
     sf::Texture texture;
+
+    sf::Font TNR;
+    TNR.loadFromFile("timesnewroman.ttf");
+
+    float width_box = 300;
+    float height_box = 100;
+
+    Button mandelButton("MANDELBROT", {width_box, height_box}, 20, sf::Color::Black, sf::Color::Green);
+    mandelButton.set_Font(TNR);
+    mandelButton.set_Position({width / 4 - width_box / 2, height / 2 - height_box / 2});
+
+    Button juliaButton("JULIA SET", {width_box, height_box}, 20, sf::Color::Black, sf::Color::Green);
+    juliaButton.set_Font(TNR);
+    juliaButton.set_Position({3 * width / 4 - width_box / 2, height / 2 - height_box / 2});
 
     double_stack saved_list;
 
@@ -95,6 +111,45 @@ int main()
         }
     }
 
+    while (window.isOpen())
+    {
+        bool flag = false;
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    if (mandelButton.is_Mouse_Over(window))
+                    {
+                        flag = true;
+                        chosen_graph = 1;
+                    }
+                    if (juliaButton.is_Mouse_Over(window))
+                    {
+                        flag = true;
+                        chosen_graph = 2;
+                    }
+                }
+            }
+            if (event.type == sf::Event::KeyPressed)
+            {
+            }
+        }
+
+        window.clear();
+        window.draw(pointmap);
+        mandelButton.draw_To(window);
+        juliaButton.draw_To(window);
+        window.display();
+        if (flag)
+        {
+            break;
+        }
+    }
     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
 
     while (window.isOpen())
@@ -168,31 +223,32 @@ int main()
                 if (event.key.code == sf::Keyboard::Up)
                 {
                     y_shift -= 10;
-                    shift_image_up(pointmap, x_shift, y_shift, resolution, zoom);
+                    shift_image_up(pointmap, x_shift, y_shift, resolution, zoom, inversion);
                 }
                 else if (event.key.code == sf::Keyboard::Down)
                 {
                     y_shift += 10;
-                    shift_image_down(pointmap, x_shift, y_shift, resolution, zoom);
+                    shift_image_down(pointmap, x_shift, y_shift, resolution, zoom, inversion);
                 }
                 else if (event.key.code == sf::Keyboard::Left)
                 {
                     x_shift -= 10;
-                    shift_image_left(pointmap, x_shift, y_shift, resolution, zoom);
+                    shift_image_left(pointmap, x_shift, y_shift, resolution, zoom, inversion);
                 }
                 else if (event.key.code == sf::Keyboard::Right)
                 {
 
                     x_shift += 10;
-                    shift_image_right(pointmap, x_shift, y_shift, resolution, zoom);
+                    shift_image_right(pointmap, x_shift, y_shift, resolution, zoom, inversion);
                 }
                 else if (event.key.code == sf::Keyboard::R)
                 {
-                    cout<<saved_list.get_size()<<endl;
-                    if(saved_list.get_size()<=1){
+                    cout << saved_list.get_size() << endl;
+                    if (saved_list.get_size() <= 1)
+                    {
                         continue;
                     }
-                    int random = rand() % (saved_list.get_size()/2);
+                    int random = rand() % (saved_list.get_size() / 2);
                     int parity = rand() % 2;
                     for (int i = 0; i < random; i++)
                     {
@@ -206,7 +262,7 @@ int main()
                         }
                     }
                     image_sfml *image_pointer = new image_sfml();
-                    cout<<saved_list.return_current(image_pointer)<<"\n";
+                    cout << saved_list.return_current(image_pointer) << "\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
                     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                     delete image_pointer;
@@ -253,7 +309,7 @@ int main()
                 {
                     cout << "Load Last Saved Image" << endl;
                     image_sfml *image_pointer = new image_sfml();
-                    cout<<saved_list.return_current(image_pointer)<<"\n";
+                    cout << saved_list.return_current(image_pointer) << "\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
                     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                     delete image_pointer;
@@ -267,7 +323,7 @@ int main()
                     }
                     cout << "Move Back in the list" << endl;
                     image_sfml *image_pointer = new image_sfml();
-                    cout<<saved_list.return_current(image_pointer)<<"\n";
+                    cout << saved_list.return_current(image_pointer) << "\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
 
                     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
@@ -282,10 +338,15 @@ int main()
                     }
                     cout << "Move Forward in the list" << endl;
                     image_sfml *image_pointer = new image_sfml();
-                    cout<<saved_list.return_current(image_pointer)<<"\n";
+                    cout << saved_list.return_current(image_pointer) << "\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
                     generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                     delete image_pointer;
+                }
+                else if (event.key.code == sf::Keyboard::I)
+                {
+                    inversion = !inversion;
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.key.code == sf::Keyboard::Q)
                 {
@@ -297,7 +358,7 @@ int main()
                     {
                         cout << "NEXT\n";
                         image_sfml *image_pointer = new image_sfml();
-                        cout<<saved_list.return_current(image_pointer)<<"\n";
+                        cout << saved_list.return_current(image_pointer) << "\n";
                         image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
                         generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                         window.clear();
@@ -310,7 +371,7 @@ int main()
                     {
                         cout << "NEXT\n";
                         image_sfml *image_pointer = new image_sfml();
-                        cout<<saved_list.return_current(image_pointer)<<"\n";
+                        cout << saved_list.return_current(image_pointer) << "\n";
                         image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
                         generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                         window.clear();
@@ -319,6 +380,10 @@ int main()
                         sf::sleep(sf::milliseconds(2000));
                         delete image_pointer;
                     } while (saved_list.move_right());
+                }
+                else if (event.key.code == sf::Keyboard::X)
+                {
+                    window.close();
                 }
             }
         }
