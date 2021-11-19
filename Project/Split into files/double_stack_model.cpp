@@ -146,9 +146,9 @@ void double_stack::delete_current_image(long double x_shift, long double y_shift
 
 bool double_stack::move_left()
 {
-    if (first.size()<=1)
+    if (first.size() <= 1)
     {
-        return false ;
+        return false;
     }
     image_sfml *removed_image = new image_sfml();
     first.removeFront(removed_image);
@@ -168,9 +168,15 @@ bool double_stack::move_right()
     return true;
 }
 
-bool double_stack::return_current(image_sfml *image_pointer)
-{ 
-    return first.front(image_pointer);
+unsigned int double_stack::return_current(image_sfml *image_pointer)
+{
+    first.front(image_pointer);
+    return first.size();
+}
+
+int double_stack::get_size()
+{
+    return first.size() + second.size();
 }
 
 #endif

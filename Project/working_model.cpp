@@ -310,7 +310,7 @@ void shift_image_right(sf::VertexArray &vertexarray, int coordinate_shift_x, int
     }
 }
 
-void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
+void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int precision, float zoom)
 {
 #pragma omp parallel for
     for (int i = 0; i < height; i++)
@@ -386,7 +386,7 @@ int main()
         }
     }
 
-    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
 
     while (window.isOpen())
     {
@@ -419,7 +419,7 @@ int main()
                 {
                     pointmap[i].color = sf::Color::Black;
                 }
-                generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                generate_graph(pointmap, x_shift, y_shift, precision, zoom);
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
@@ -435,7 +435,7 @@ int main()
                     {
                         pointmap[i].color = sf::Color::Black;
                     }
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
@@ -451,7 +451,7 @@ int main()
                     {
                         pointmap[i].color = sf::Color::Black;
                     }
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
                 }
             }
             if (event.type == sf::Event::KeyPressed)
@@ -485,7 +485,7 @@ int main()
                     precision = min(4000, 100+200*random_number);
                     // x_shift = ((rand()%2)*2-1)*rand();
                     // y_shift = ((rand()%2)*2-1)*rand();
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
                 }
                 if (event.key.code == sf::Keyboard::H)
                 {
@@ -493,7 +493,7 @@ int main()
                     precision = 100;
                     x_shift = -width / 2;
                     y_shift = -height / 2;
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
                 }
             }
         }

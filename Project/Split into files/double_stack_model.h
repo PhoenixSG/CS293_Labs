@@ -56,12 +56,7 @@ public:
     void delete_current_image(long double x_shift, long double y_shift, int resolution, float zoom, sf::VertexArray vertexarray);
     bool move_left();
     bool move_right();
-    bool return_current(image_sfml *image_pointer);
+    int get_size();
+    unsigned int return_current(image_sfml *image_pointer);
 };
 
-//This is another data structure using the dequeue class.
-//This structure returns a random image from the set of images stored.
-//The way we achieve this is by
-class random_sampling
-{
-};

@@ -11,62 +11,70 @@
 using namespace std;
 //resolution of the window
 
-void generate_mandelbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
-{
-#pragma omp parallel for
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
-            long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
-            complex_num point;
-            point.set_real(x_coor);
-            point.set_img(y_coor);
-            complex_num z = point;
-            int iterations = in_mandelbrot(x_coor, y_coor, resolution);
-            mandelbrot_coloring(i, j, iterations, resolution, vertexarray);
-        }
-    }
-    cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
-    cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
-}
+int chosen_graph = 1;
 
-void generate_mandelfbrot_set(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
+void generate_graph(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
-    int iterations[height][width];
-    int maximum = 0;
+    if (chosen_graph == 1)
+    {
 #pragma omp parallel for
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
+        for (int i = 0; i < height; i++)
         {
-            long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
-            long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
-            complex_num point;
-            point.set_real(x_coor);
-            point.set_img(y_coor);
-            complex_num z = point;
-            iterations[i][j] = julia(x_coor, y_coor, resolution, complex_num(0.285, 0.01));
-            maximum = max(iterations[i][j], maximum);
+            for (int j = 0; j < width; j++)
+            {
+                long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+                long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
+                complex_num point;
+                point.set_real(x_coor);
+                point.set_img(y_coor);
+                complex_num z = point;
+                int iterations = in_mandelbrot(x_coor, y_coor, resolution);
+                mandelbrot_coloring(i, j, iterations, resolution, vertexarray);
+            }
         }
+        cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
+        // cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
     }
-    cout << maximum << endl;
-    for (int i = 0; i < height; i++)
+    else if (chosen_graph == 2)
     {
-        for (int j = 0; j < width; j++)
+        int iterations[height][width];
+        int maximum = 0;
+#pragma omp parallel for
+        for (int i = 0; i < height; i++)
         {
-            julia_coloring(i, j, iterations[i][j], maximum, vertexarray);
+            for (int j = 0; j < width; j++)
+            {
+                long double x_coor = (coordinate_shift_x + (long double)j) / int(zoom);
+                long double y_coor = (coordinate_shift_y + (long double)i) / int(zoom);
+                complex_num point;
+                point.set_real(x_coor);
+                point.set_img(y_coor);
+                complex_num z = point;
+                iterations[i][j] = julia(x_coor, y_coor, resolution, complex_num(0.285, 0.01));
+                maximum = max(iterations[i][j], maximum);
+            }
         }
-    }
+        // cout << maximum << endl;
+        for (int i = 0; i < height; i++)
+        {
+            for (int j = 0; j < width; j++)
+            {
+                julia_coloring(i, j, iterations[i][j], maximum, vertexarray);
+            }
+        }
 
-    // cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
-    // cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
+        cout << "ZOOM is " << zoom << " and resolution level is " << resolution << endl;
+        // cout << "xshift is " << coordinate_shift_x << " and yshift is " << coordinate_shift_y << endl;
+    }
 }
 
 int main()
 {
-    cout << "Hello and Welcome to my Mandelbort Set Project.\nThis i" << endl;
+    cout << "Hello and Welcome to my Mandelbort Set Project.\n";
+    cout << "Please read the Instructions in the README file before proceeding.\n";
+    cout << "Here you find and interactive graph which you can use to study various properties of different graphs\n";
+    cout << "Please choose the graph you like!\n\n";
+
     sf::String heading = "Mandelbrot Set Plotter";
     sf::RenderWindow window(sf::VideoMode(width, height), heading);
     window.setFramerateLimit(100);
@@ -87,7 +95,7 @@ int main()
         }
     }
 
-    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
 
     while (window.isOpen())
     {
@@ -120,7 +128,7 @@ int main()
                 {
                     pointmap[i].color = sf::Color::Black;
                 }
-                generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
@@ -136,7 +144,7 @@ int main()
                     {
                         pointmap[i].color = sf::Color::Black;
                     }
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
@@ -152,7 +160,7 @@ int main()
                     {
                         pointmap[i].color = sf::Color::Black;
                     }
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
             }
             if (event.type == sf::Event::KeyPressed)
@@ -180,33 +188,48 @@ int main()
                 }
                 else if (event.key.code == sf::Keyboard::R)
                 {
-                    int random_number = 10.0 * rand() / RAND_MAX + 1;
-                    cout << random_number << endl;
-                    zoom = min(pow(10, 9), 256.0f * pow(2, random_number));
-                    resolution = min(4000, 100 + 200 * random_number);
-                    // x_shift = ((rand()%2)*2-1)*rand();
-                    // y_shift = ((rand()%2)*2-1)*rand();
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    cout<<saved_list.get_size()<<endl;
+                    if(saved_list.get_size()<=1){
+                        continue;
+                    }
+                    int random = rand() % (saved_list.get_size()/2);
+                    int parity = rand() % 2;
+                    for (int i = 0; i < random; i++)
+                    {
+                        if (parity)
+                        {
+                            saved_list.move_right();
+                        }
+                        else
+                        {
+                            saved_list.move_left();
+                        }
+                    }
+                    image_sfml *image_pointer = new image_sfml();
+                    cout<<saved_list.return_current(image_pointer)<<"\n";
+                    image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                    delete image_pointer;
                 }
                 else if (event.key.code == sf::Keyboard::RBracket)
                 {
                     cout << "Resolution Increased" << endl;
                     resolution = min(4000, resolution + 200);
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.key.code == sf::Keyboard::LBracket)
                 {
                     cout << "Resolution Decreased" << endl;
                     resolution = max(100, resolution - 200);
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.key.code == sf::Keyboard::C)
                 {
                     texture.create(window.getSize().x, window.getSize().y);
                     texture.update(window);
-                    if (texture.copyToImage().saveToFile("Zoom- " + to_string(zoom) + ", Resolution- " + to_string(resolution)))
+                    if (texture.copyToImage().saveToFile("Zoom- " + to_string(zoom) + ", Resolution- " + to_string(resolution) + ".jpg"))
                     {
-                        cout << "screenshot saved" << endl;
+                        cout << "Screenshot saved!" << endl;
                     }
                 }
                 else if (event.key.code == sf::Keyboard::H)
@@ -217,49 +240,85 @@ int main()
                     resolution = 100;
                     x_shift = -width / 2;
                     y_shift = -height / 2;
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.key.code == sf::Keyboard::S)
                 {
                     cout << "Save Image in List" << endl;
 
                     saved_list.insert(x_shift, y_shift, resolution, zoom, pointmap);
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
                 }
                 else if (event.key.code == sf::Keyboard::W)
                 {
                     cout << "Load Last Saved Image" << endl;
                     image_sfml *image_pointer = new image_sfml();
-                    saved_list.return_current(image_pointer);
+                    cout<<saved_list.return_current(image_pointer)<<"\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                    delete image_pointer;
                 }
                 else if (event.key.code == sf::Keyboard::A)
                 {
                     if (!saved_list.move_left())
                     {
-                        cout<<"Nowhere to move back!"<<endl;
+                        cout << "Nowhere to move back!" << endl;
                         continue;
                     }
                     cout << "Move Back in the list" << endl;
                     image_sfml *image_pointer = new image_sfml();
-                    saved_list.return_current(image_pointer);
+                    cout<<saved_list.return_current(image_pointer)<<"\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
 
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                    delete image_pointer;
                 }
                 else if (event.key.code == sf::Keyboard::D)
                 {
                     if (!saved_list.move_right())
                     {
-                        cout<<"Nowhere to move forward!"<<endl;
+                        cout << "Nowhere to move forward!" << endl;
                         continue;
                     }
                     cout << "Move Forward in the list" << endl;
                     image_sfml *image_pointer = new image_sfml();
-                    saved_list.return_current(image_pointer);
+                    cout<<saved_list.return_current(image_pointer)<<"\n";
                     image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, resolution, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                    delete image_pointer;
+                }
+                else if (event.key.code == sf::Keyboard::Q)
+                {
+                    while (saved_list.move_right())
+                    {
+                        ;
+                    }
+                    do
+                    {
+                        cout << "NEXT\n";
+                        image_sfml *image_pointer = new image_sfml();
+                        cout<<saved_list.return_current(image_pointer)<<"\n";
+                        image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
+                        generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                        window.clear();
+                        window.draw(pointmap);
+                        window.display();
+                        sf::sleep(sf::milliseconds(2000));
+                        delete image_pointer;
+                    } while (saved_list.move_left());
+                    do
+                    {
+                        cout << "NEXT\n";
+                        image_sfml *image_pointer = new image_sfml();
+                        cout<<saved_list.return_current(image_pointer)<<"\n";
+                        image_pointer->retrieve_image_parameters(x_shift, y_shift, resolution, zoom, pointmap);
+                        generate_graph(pointmap, x_shift, y_shift, resolution, zoom);
+                        window.clear();
+                        window.draw(pointmap);
+                        window.display();
+                        sf::sleep(sf::milliseconds(2000));
+                        delete image_pointer;
+                    } while (saved_list.move_right());
                 }
             }
         }

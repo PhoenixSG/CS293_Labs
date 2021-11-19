@@ -3,11 +3,11 @@
 #include "mandelbrot.cpp"
 #include "dimension_set.h"
 
-
 void shift_image_down(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
-    //assume right is pressed.
-    // This means we recalculate only when j>width-10(say)
+    //assume down is pressed.
+    // This means we recalculate only when i<height-10(say)
+// #pragma omp parallel for
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
@@ -36,8 +36,9 @@ void shift_image_down(sf::VertexArray &vertexarray, int coordinate_shift_x, int 
 }
 void shift_image_up(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
-    //assume right is pressed.
-    // This means we recalculate only when j>width-10(say)
+    //assume up is pressed.
+    // This means we recalculate only when i>10(say)
+// #pragma omp parallel for
     for (int i = height - 1; i >= 0; i--)
     {
         for (int j = 0; j < width; j++)
@@ -65,8 +66,9 @@ void shift_image_up(sf::VertexArray &vertexarray, int coordinate_shift_x, int co
 }
 void shift_image_left(sf::VertexArray &vertexarray, int coordinate_shift_x, int coordinate_shift_y, int resolution, float zoom)
 {
-    //assume right is pressed.
-    // This means we recalculate only when j>width-10(say)
+    //assume left is pressed.
+    // This means we recalculate only when j<10(say)
+#pragma omp parallel for
     for (int i = 0; i < height; i++)
     {
         for (int j = width - 1; j >= 0; j--)
@@ -96,6 +98,7 @@ void shift_image_right(sf::VertexArray &vertexarray, int coordinate_shift_x, int
 {
     //assume right is pressed.
     // This means we recalculate only when j>width-10(say)
+#pragma omp parallel for
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)

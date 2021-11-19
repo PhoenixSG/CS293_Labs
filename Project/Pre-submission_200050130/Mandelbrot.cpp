@@ -45,7 +45,7 @@ class complex_num
 
 };
 
-void generate_mandelbrot_set(sf::VertexArray &vertexarray, int x_shift, int y_shift, int precision_needed, float zoom)
+void generate_graph(sf::VertexArray &vertexarray, int x_shift, int y_shift, int precision_needed, float zoom)
 {
     for (int i = 0; i < height; i++)
     {
@@ -91,7 +91,7 @@ int main()
     int x_shift = -width / 2;
     int y_shift = -height / 2;
 
-    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
 
     while (window.isOpen())
     {
@@ -123,7 +123,7 @@ int main()
                 {
                     pointmap[i].color = sf::Color::Black;
                 }
-                generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                generate_graph(pointmap, x_shift, y_shift, precision, zoom);
             }
             if (event.type == sf::Event::MouseButtonPressed)
             {
@@ -138,7 +138,7 @@ int main()
                     {
                         pointmap[i].color = sf::Color::Black;
                     }
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
                 }
                 else if (event.mouseButton.button == sf::Mouse::Right)
                 {
@@ -153,7 +153,7 @@ int main()
                     {
                         pointmap[i].color = sf::Color::Black;
                     }
-                    generate_mandelbrot_set(pointmap, x_shift, y_shift, precision, zoom);
+                    generate_graph(pointmap, x_shift, y_shift, precision, zoom);
                 }
             }
         }

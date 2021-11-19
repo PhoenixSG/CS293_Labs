@@ -1,3 +1,5 @@
+#include "SFML/Graphics.hpp"
+
 void mandelbrot_coloring(int i, int j, int iterations, int total, sf::VertexArray &vertexarray)
 {
     //color pixel based on the number of iterations

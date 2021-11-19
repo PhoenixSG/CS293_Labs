@@ -1,3 +1,6 @@
+#ifndef BUTTON
+#define BUTTON
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
@@ -80,3 +83,5 @@ bool Button::isMouseOver(sf::RenderWindow &window) {
 	}
 	return false;
 }
+
+#endif
